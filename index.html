@@ -1,0 +1,449 @@
+import React, { useState, useCallback } from 'react';
+
+// Helper function to generate a unique ID
+const generateUniqueId = () => `id-${Math.random().toString(36).substr(2, 9)}`;
+
+// Dropdown options for investigation prompts
+const options = {
+  jenisPenyelidikan: [
+    'Kuantitatif', 'Kualitatif', 'Metod Gabungan'
+  ],
+  tujuanUtamaPenyelidikan: [
+    'Mengungkap Fakta Kasus Kriminal', 'Riset Jurnalistik Mendalam', 'Analisis Intelijen',
+    'Penyelidikan Latar Belakang (Background Check)', 'Studi Kasus Akademis', 'Lainnya (Tulis Sendiri)'
+  ],
+  jenisInformasi: [
+    'Alibi dan Linimasa Kejadian', 'Motif Pelaku/Subjek', 'Hubungan Antar Individu/Entitas',
+    'Analisis Bukti Fisik dan Digital', 'Pemeriksaan Laporan Keuangan', 'Identifikasi Pola Perilaku',
+    'Lainnya (Tulis Sendiri)'
+  ],
+  sumberInformasi: [
+    'Wawancara Saksi/Subjek', 'Dokumen Resmi (Laporan Polisi, Pengadilan)', 'Jejak Digital (Media Sosial, Email)',
+    'Laporan Keuangan/Perbankan', 'Rekaman CCTV/Audio', 'Data Intelijen Sumber Terbuka (OSINT)',
+    'Lainnya (Tulis Sendiri)'
+  ],
+  gayaBahasaNada: [
+    'Formal dan Objektif', 'Interogatif dan Menyelidik', 'Analitis dan Kritis',
+    'Naratif dan Deskriptif', 'Persuasif (untuk laporan)', 'Lainnya (Tulis Sendiri)'
+  ],
+  strukturPrompt: [
+    'Pertanyaan 5W+1H (Siapa, Apa, Kapan, Di Mana, Mengapa, Bagaimana)', 'Analisis Kronologis Kejadian',
+    'Analisis Jaringan dan Hubungan', 'Pembuatan dan Pengujian Hipotesis', 'Identifikasi Kejanggalan dan Inkonsistensi',
+    'Lainnya (Tulis Sendiri)'
+  ],
+  formatOutput: [
+    'Ringkasan Laporan Investigasi', 'Daftar Pertanyaan untuk Wawancara', 'Linimasa Kejadian Rinci',
+    'Analisis Profil Subjek/Entitas', 'Draf Artikel Jurnalistik', 'Poin-poin Kunci untuk Presentasi',
+    'Lainnya (Tulis Sendiri)'
+  ],
+  peranSubjek: [
+    'Tersangka', 'Saksi', 'Korban', 'Orang yang Diinvestigasi', 'Narasumber', 'Lainnya (Tulis Sendiri)'
+  ],
+  detailKunci: [
+    'Fokus pada hubungan keuangan antara subjek A dan B', 'Cari kemungkinan adanya alibi palsu',
+    'Analisis postingan media sosial dalam 3 bulan terakhir', 'Identifikasi kemungkinan motif balas dendam',
+    'Bandingkan keterangan saksi A dan saksi B', 'Lainnya (Tulis Sendiri)'
+  ]
+};
+
+// Generic Dropdown component
+const Dropdown = ({ label, value, onChange, options, customValue, onCustomChange }) => (
+  <div className="mb-4">
+    <label className="block text-gray-700 text-sm font-bold mb-2">{label}</label>
+    <select
+      className="shadow appearance-none border rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white"
+      value={value}
+      onChange={onChange}
+    >
+      <option value="">Pilih...</option>
+      {options.map((option, index) => (
+        <option key={index} value={option}>{option}</option>
+      ))}
+    </select>
+    {value === 'Lainnya (Tulis Sendiri)' && (
+      <input
+        type="text"
+        className="mt-2 shadow appearance-none border rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        placeholder={`Tulis ${label.toLowerCase()} sendiri...`}
+        value={customValue}
+        onChange={onCustomChange}
+      />
+    )}
+  </div>
+);
+
+// Subject Detail Input Component
+const SubjekDetailInput = ({ label, value, onChange }) => (
+    <div className="mb-2">
+      <label className="block text-gray-700 text-sm font-bold mb-1">{label}</label>
+      <input
+        type="text"
+        className="shadow appearance-none border rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white text-sm"
+        placeholder={`Masukkan ${label.toLowerCase()}...`}
+        value={value}
+        onChange={onChange}
+      />
+    </div>
+  );
+
+function App() {
+  const [promptOptions, setPromptOptions] = useState({
+    jenisPenyelidikan: '',
+    tujuanUtamaPenyelidikan: '',
+    customTujuanUtamaPenyelidikan: '',
+    jenisInformasi: '',
+    customJenisInformasi: '',
+    sumberInformasi: '',
+    customSumberInformasi: '',
+    gayaBahasaNada: '',
+    customGayaBahasaNada: '',
+    strukturPrompt: '',
+    customStrukturPrompt: '',
+    formatOutput: '',
+    customFormatOutput: '',
+    subjekPenyelidikan: [],
+    detailKunci: [{ id: generateUniqueId(), value: '', custom: '' }],
+  });
+
+  const [generatedPrompt, setGeneratedPrompt] = useState('');
+  const [message, setMessage] = useState('');
+
+  // Handle changes for main dropdowns
+  const handleChange = (e, field) => {
+    const { value } = e.target;
+    setPromptOptions(prev => ({
+      ...prev,
+      [field]: value,
+      [`custom${field.charAt(0).toUpperCase() + field.slice(1)}`]: value === 'Lainnya (Tulis Sendiri)' ? prev[`custom${field.charAt(0).toUpperCase() + field.slice(1)}`] : ''
+    }));
+  };
+
+  // Handle changes for custom inputs of main dropdowns
+  const handleCustomChange = (e, field) => {
+    setPromptOptions(prev => ({
+      ...prev,
+      [`custom${field.charAt(0).toUpperCase() + field.slice(1)}`]: e.target.value
+    }));
+  };
+
+  // Handle changes for repeatable dropdowns
+  const handleRepeatableChange = (e, field, id) => {
+    const { value } = e.target;
+    setPromptOptions(prev => ({
+      ...prev,
+      [field]: prev[field].map(item =>
+        item.id === id ? { ...item, value, custom: value === 'Lainnya (Tulis Sendiri)' ? item.custom : '' } : item
+      )
+    }));
+  };
+
+  // Handle changes for custom inputs of repeatable dropdowns
+  const handleRepeatableCustomChange = (e, field, id) => {
+    setPromptOptions(prev => ({
+      ...prev,
+      [field]: prev[field].map(item =>
+        item.id === id ? { ...item, custom: e.target.value } : item
+      )
+    }));
+  };
+
+  // Add new item to repeatable list
+  const addRepeatableItem = (field, defaultValues = {}) => {
+    setPromptOptions(prev => ({
+      ...prev,
+      [field]: [...prev[field], { id: generateUniqueId(), value: '', custom: '', ...defaultValues }]
+    }));
+  };
+
+  // Remove item from repeatable list
+  const removeRepeatableItem = (field, id) => {
+    setPromptOptions(prev => ({
+      ...prev,
+      [field]: prev[field].filter(item => item.id !== id)
+    }));
+  };
+
+  // Handle subject detail changes
+  const handleSubjekDetailChange = (e, subjekId, detailField) => {
+    const { value } = e.target;
+    setPromptOptions(prev => ({
+      ...prev,
+      subjekPenyelidikan: prev.subjekPenyelidikan.map(subjek =>
+        subjek.id === subjekId ? { ...subjek, [detailField]: value } : subjek
+      )
+    }));
+  };
+
+  const generatePromptText = useCallback(() => {
+    const parts = [];
+
+    const getValue = (field) => {
+      const selectedValue = promptOptions[field];
+      if (field === 'jenisPenyelidikan') {
+          return selectedValue;
+      }
+      const customValue = promptOptions[`custom${field.charAt(0).toUpperCase() + field.slice(1)}`];
+      return selectedValue === 'Lainnya (Tulis Sendiri)' ? customValue : selectedValue;
+    };
+
+    const getRepeatableValues = (field) => {
+      return promptOptions[field]
+        .map(item => (item.value === 'Lainnya (Tulis Sendiri)' ? item.custom : item.value))
+        .filter(Boolean);
+    };
+
+    const getSubjekDetails = (subjek) => {
+      const details = [];
+      if (subjek.nama) details.push(`Nama: ${subjek.nama}`);
+      if (subjek.peran) details.push(`Peran: ${subjek.peran}`);
+      if (subjek.latarBelakang) details.push(`Latar Belakang: ${subjek.latarBelakang}`);
+      return details.join(', ');
+    };
+    
+    parts.push("Anda adalah seorang asisten investigasi AI yang ahli. Berdasarkan informasi berikut, hasilkan output yang diminta.");
+    parts.push("---");
+
+
+    const appendIfPresent = (label, value) => {
+      if (value) parts.push(`**${label}:** ${value}`);
+    };
+
+    appendIfPresent('Jenis Penyelidikan', getValue('jenisPenyelidikan'));
+    appendIfPresent('Tujuan Utama Penyelidikan', getValue('tujuanUtamaPenyelidikan'));
+    appendIfPresent('Jenis Informasi yang Dicari', getValue('jenisInformasi'));
+    appendIfPresent('Sumber Informasi Utama', getValue('sumberInformasi'));
+    appendIfPresent('Gaya Bahasa dan Nada', getValue('gayaBahasaNada'));
+    appendIfPresent('Struktur Analisis/Prompt', getValue('strukturPrompt'));
+    appendIfPresent('Format Output yang Diinginkan', getValue('formatOutput'));
+    
+    if (promptOptions.subjekPenyelidikan.length > 0) {
+        parts.push("\n**Subjek/Entitas Utama:**");
+        promptOptions.subjekPenyelidikan.forEach((subjek, index) => {
+        const details = getSubjekDetails(subjek);
+        if (details) parts.push(`- Subjek ${index + 1}: ${details}`);
+      });
+    }
+
+    const detailKunciValues = getRepeatableValues('detailKunci');
+    if (detailKunciValues.length > 0) {
+        parts.push("\n**Detail Kunci atau Instruksi Khusus:**");
+        detailKunciValues.forEach(detail => parts.push(`- ${detail}`));
+    }
+    
+    parts.push("\n---");
+    parts.push("Mohon proses permintaan ini secara komprehensif dan detail.");
+
+
+    return parts.filter(Boolean).join('\n');
+  }, [promptOptions]);
+
+  const handleGeneratePrompt = () => {
+    const prompt = generatePromptText();
+    setGeneratedPrompt(prompt);
+    setMessage('Prompt berhasil dibuat!');
+  };
+
+  const copyToClipboard = () => {
+    if (!generatedPrompt) {
+        setMessage('Tidak ada prompt untuk disalin. Silakan buat prompt terlebih dahulu.');
+        return;
+    }
+    try {
+      const textarea = document.createElement('textarea');
+      textarea.value = generatedPrompt;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      setMessage('Prompt berhasil disalin ke clipboard!');
+    } catch (err) {
+      console.error('Gagal menyalin: ', err);
+      setMessage('Gagal menyalin prompt.');
+    }
+  };
+
+
+  return (
+    <div className="min-h-screen bg-gray-100 text-gray-800 p-4 sm:p-6 lg:p-8 font-sans">
+      <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-2xl p-6 sm:p-8 lg:p-10 border border-gray-200">
+        <div className="text-center mb-8">
+            <h1 className="text-4xl sm:text-5xl font-bold text-gray-800 mb-2">
+            Prompt Generator untuk Penyelidikan
+            </h1>
+            <p className="text-lg text-gray-600">Dibuat untuk Gemini Pro</p>
+        </div>
+        
+
+        {/* Main Prompt Options */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 mb-6">
+          <Dropdown
+            label="Jenis Penyelidikan"
+            value={promptOptions.jenisPenyelidikan}
+            onChange={(e) => handleChange(e, 'jenisPenyelidikan')}
+            options={options.jenisPenyelidikan}
+          />
+          <Dropdown
+            label="Tujuan Utama Penyelidikan"
+            value={promptOptions.tujuanUtamaPenyelidikan}
+            onChange={(e) => handleChange(e, 'tujuanUtamaPenyelidikan')}
+            options={options.tujuanUtamaPenyelidikan}
+            customValue={promptOptions.customTujuanUtamaPenyelidikan}
+            onCustomChange={(e) => handleCustomChange(e, 'tujuanUtamaPenyelidikan')}
+          />
+          <Dropdown
+            label="Jenis Informasi yang Dicari"
+            value={promptOptions.jenisInformasi}
+            onChange={(e) => handleChange(e, 'jenisInformasi')}
+            options={options.jenisInformasi}
+            customValue={promptOptions.customJenisInformasi}
+            onCustomChange={(e) => handleCustomChange(e, 'jenisInformasi')}
+          />
+          <Dropdown
+            label="Sumber Informasi Utama"
+            value={promptOptions.sumberInformasi}
+            onChange={(e) => handleChange(e, 'sumberInformasi')}
+            options={options.sumberInformasi}
+            customValue={promptOptions.customSumberInformasi}
+            onCustomChange={(e) => handleCustomChange(e, 'sumberInformasi')}
+          />
+          <Dropdown
+            label="Gaya Bahasa & Nada"
+            value={promptOptions.gayaBahasaNada}
+            onChange={(e) => handleChange(e, 'gayaBahasaNada')}
+            options={options.gayaBahasaNada}
+            customValue={promptOptions.customGayaBahasaNada}
+            onCustomChange={(e) => handleCustomChange(e, 'gayaBahasaNada')}
+          />
+          <Dropdown
+            label="Struktur Analisis/Prompt"
+            value={promptOptions.strukturPrompt}
+            onChange={(e) => handleChange(e, 'strukturPrompt')}
+            options={options.strukturPrompt}
+            customValue={promptOptions.customStrukturPrompt}
+            onCustomChange={(e) => handleCustomChange(e, 'strukturPrompt')}
+          />
+          <Dropdown
+            label="Format Output yang Diinginkan"
+            value={promptOptions.formatOutput}
+            onChange={(e) => handleChange(e, 'formatOutput')}
+            options={options.formatOutput}
+            customValue={promptOptions.customFormatOutput}
+            onCustomChange={(e) => handleCustomChange(e, 'formatOutput')}
+          />
+        </div>
+
+        {/* Subjects Section */}
+        <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+          <h3 className="text-xl font-bold text-gray-800 mb-4">Subjek/Entitas Penyelidikan</h3>
+          {promptOptions.subjekPenyelidikan.map((subjek, index) => (
+            <div key={subjek.id} className="bg-white p-4 rounded-md shadow-inner mb-6 border border-gray-200">
+              <div className="flex justify-between items-center mb-4">
+                <h4 className="font-semibold text-gray-800">Subjek {index + 1}</h4>
+                <button
+                  onClick={() => removeRepeatableItem('subjekPenyelidikan', subjek.id)}
+                  className="px-3 py-1 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors duration-200 text-sm"
+                >
+                  Hapus
+                </button>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-4 gap-y-2">
+                <SubjekDetailInput
+                  label="Nama Subjek/Entitas"
+                  value={subjek.nama}
+                  onChange={(e) => handleSubjekDetailChange(e, subjek.id, 'nama')}
+                />
+                <Dropdown
+                    label="Peran dalam Kasus"
+                    value={subjek.peran}
+                    onChange={(e) => handleSubjekDetailChange(e, subjek.id, 'peran')}
+                    options={options.peranSubjek}
+                    customValue={subjek.peran === 'Lainnya (Tulis Sendiri)' ? subjek.customPeran : ''}
+                    onCustomChange={(e) => handleSubjekDetailChange(e, subjek.id, 'customPeran')}
+                />
+                <SubjekDetailInput
+                  label="Latar Belakang/Info Kunci"
+                  value={subjek.latarBelakang}
+                  onChange={(e) => handleSubjekDetailChange(e, subjek.id, 'latarBelakang')}
+                />
+              </div>
+            </div>
+          ))}
+          <button
+            onClick={() => addRepeatableItem('subjekPenyelidikan', { nama: '', peran: '', latarBelakang: '' })}
+            className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 shadow-md"
+          >
+            Tambah Subjek
+          </button>
+        </div>
+
+        {/* Key Details Section */}
+        <div className="mb-8 p-4 bg-gray-50 rounded-lg border border-gray-200">
+          <h3 className="text-xl font-bold text-gray-800 mb-4">Detail Kunci atau Instruksi Khusus</h3>
+          {promptOptions.detailKunci.map((item, index) => (
+            <div key={item.id} className="flex items-end gap-4 mb-4">
+              <div className="flex-grow">
+                <Dropdown
+                  label={`Detail Kunci ${index + 1}`}
+                  value={item.value}
+                  onChange={(e) => handleRepeatableChange(e, 'detailKunci', item.id)}
+                  options={options.detailKunci}
+                  customValue={item.custom}
+                  onCustomChange={(e) => handleRepeatableCustomChange(e, 'detailKunci', item.id)}
+                />
+              </div>
+              {promptOptions.detailKunci.length > 1 && (
+                <button
+                  onClick={() => removeRepeatableItem('detailKunci', item.id)}
+                  className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors duration-200 shadow-md mb-2"
+                >
+                  Hapus
+                </button>
+              )}
+            </div>
+          ))}
+          <button
+            onClick={() => addRepeatableItem('detailKunci')}
+            className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 shadow-md"
+          >
+            Tambah Detail Kunci
+          </button>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
+          <button
+            onClick={handleGeneratePrompt}
+            className="flex-1 px-8 py-3 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 transition-transform transform hover:scale-105 duration-200 shadow-lg text-lg"
+          >
+            Buat Prompt Investigasi
+          </button>
+          <button
+            onClick={copyToClipboard}
+            className="flex-1 px-8 py-3 bg-gray-700 text-white font-bold rounded-lg hover:bg-gray-800 transition-transform transform hover:scale-105 duration-200 shadow-lg text-lg"
+          >
+            Salin Prompt
+          </button>
+        </div>
+
+        {message && (
+          <div className="mt-6 p-3 bg-blue-100 text-blue-800 rounded-md text-center font-medium transition-opacity duration-300">
+            {message}
+          </div>
+        )}
+
+        {generatedPrompt && (
+          <div className="mt-8 p-6 bg-gray-800 text-white rounded-lg border border-gray-600 shadow-inner">
+            <h3 className="text-xl font-bold text-gray-100 mb-4">Prompt yang Dihasilkan:</h3>
+            <pre className="whitespace-pre-wrap font-mono text-sm text-gray-200 bg-gray-900 p-4 rounded-md">
+              {generatedPrompt}
+            </pre>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default App;
