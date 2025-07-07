@@ -16,586 +16,514 @@
       background-color: #f3f4f6;
       color: #1f2937;
       line-height: 1.6;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
       padding: 20px;
     }
 
-    header {
-      text-align: center;
-      padding: 40px 0;
-      background-color: #1e40af;
-      color: white;
-      border-radius: 8px;
-      margin-bottom: 40px;
-    }
-
-    header h1 {
-      font-size: 2.5rem;
-      margin-bottom: 10px;
-    }
-
-    header p {
-      font-size: 1.2rem;
-      opacity: 0.9;
-    }
-
-    .features {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-      margin-bottom: 40px;
-    }
-
-    .feature-card {
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
       background: white;
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      text-align: center;
     }
 
-    .feature-card h3 {
-      font-size: 1.5rem;
-      margin-bottom: 10px;
+    h1 {
+      text-align: center;
       color: #1e40af;
+      margin-bottom: 20px;
     }
 
-    .feature-card p {
-      color: #4b5563;
+    .section {
+      margin-bottom: 20px;
     }
 
-    .cta {
-      text-align: center;
-      margin: 40px 0;
+    .section h2 {
+      font-size: 1.5rem;
+      color: #1e40af;
+      margin-bottom: 10px;
     }
 
-    .cta-button {
-      display: inline-block;
-      padding: 12px 24px;
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    select, input[type="text"], textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+
+    .custom-input {
+      margin-top: 10px;
+    }
+
+    .subject, .detail {
+      border: 1px solid #e5e7eb;
+      padding: 10px;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+
+    .button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+
+    .button-primary {
       background-color: #1e40af;
       color: white;
-      text-decoration: none;
-      border-radius: 6px;
-      font-size: 1.1rem;
-      transition: background-color 0.2s;
     }
 
-    .cta-button:hover {
+    .button-primary:hover {
       background-color: #1e3a8a;
     }
 
-    footer {
-      text-align: center;
-      padding: 20px 0;
-      background-color: #1f2937;
+    .button-danger {
+      background-color: #dc2626;
       color: white;
-      margin-top: 40px;
+    }
+
+    .button-danger:hover {
+      background-color: #b91c1c;
+    }
+
+    .message {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 4px;
+    }
+
+    .message.success {
+      background-color: #dcfce7;
+      color: #15803d;
+    }
+
+    .message.error {
+      background-color: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .generated-prompt {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 4px;
+      white-space: pre-wrap;
     }
 
     @media (max-width: 768px) {
-      header h1 {
-        font-size: 2rem;
-      }
-
       .container {
         padding: 15px;
+      }
+
+      h1 {
+        font-size: 1.8rem;
       }
     }
   </style>
 </head>
 <body>
-  <header>
-    <div class="container">
-      <h1>Penjana Prompt Penyelidikan</h1>
-      <p>Alat berkuasa untuk menghasilkan prompt penyelidikan yang terperinci dan tersusun</p>
-    </div>
-  </header>
-
   <div class="container">
-    <section class="features">
-      <div class="feature-card">
-        <h3>Pilihan Fleksibel</h3>
-        <p>Pilih daripada pelbagai jenis siasatan, sumber maklumat, dan format output untuk disesuaikan dengan keperluan anda.</p>
-      </div>
-      <div class="feature-card">
-        <h3>Struktur Terperinci</h3>
-        <p>Menghasilkan gesa dengan struktur analisis seperti 5W+1H, kronologi kejadian, dan banyak lagi.</p>
-      </div>
-      <div class="feature-card">
-        <h3>Mudah Digunakan</h3>
-        <p>Antara muka yang mesra pengguna untuk menghasilkan dan menyalin gesa siasatan dengan cepat.</p>
-      </div>
-    </section>
+    <h1>Penjana Prompt Penyelidikan</h1>
 
-    <div class="cta">
-      <a href="#" class="cta-button" onclick="alert('Fungsi penjana akan tersedia tidak lama lagi!')">Cuba Sekarang</a>
+    <div class="section">
+      <h2>Pilihan Prompt</h2>
+      <div class="form-group">
+        <label for="jenisSiasatan">Jenis Siasatan</label>
+        <select id="jenisSiasatan">
+          <option value="">Pilih...</option>
+          <option value="Kuantitatif">Kuantitatif</option>
+          <option value="Kualitatif">Kualitatif</option>
+          <option value="Kaedah Campuran">Kaedah Campuran</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="tujuanUtamaSiasatan">Tujuan Utama Siasatan</label>
+        <select id="tujuanUtamaSiasatan">
+          <option value="">Pilih...</option>
+          <option value="Mendedahkan Fakta Kes Jenayah">Mendedahkan Fakta Kes Jenayah</option>
+          <option value="Penyelidikan Kewartawanan Mendalam">Penyelidikan Kewartawanan Mendalam</option>
+          <option value="Analisis Risikan">Analisis Risikan</option>
+          <option value="Pemeriksaan Latar Belakang">Pemeriksaan Latar Belakang</option>
+          <option value="Kajian Kes Akademik">Kajian Kes Akademik</option>
+          <option value="Lain-lain (Tulis Sendiri)">Lain-lain (Tulis Sendiri)</option>
+        </select>
+        <input type="text" id="customTujuanUtamaSiasatan" class="custom-input" placeholder="Tulis tujuan anda..." style="display: none;">
+      </div>
+      <div class="form-group">
+        <label for="jenisMaklumat">Jenis Maklumat yang Dicari</label>
+        <select id="jenisMaklumat">
+          <option value="">Pilih...</option>
+          <option value="Alibi dan Garis Masa Kejadian">Alibi dan Garis Masa Kejadian</option>
+          <option value="Motif Pelaku/Subjek">Motif Pelaku/Subjek</option>
+          <option value="Hubungan Antara Individu/Entiti">Hubungan Antara Individu/Entiti</option>
+          <option value="Analisis Bukti Fizikal dan Digital">Analisis Bukti Fizikal dan Digital</option>
+          <option value="Pemeriksaan Laporan Kewangan">Pemeriksaan Laporan Kewangan</option>
+          <option value="Pengecaman Corak Tingkah Laku">Pengecaman Corak Tingkah Laku</option>
+          <option value="Lain-lain (Tulis Sendiri)">Lain-lain (Tulis Sendiri)</option>
+        </select>
+        <input type="text" id="customJenisMaklumat" class="custom-input" placeholder="Tulis jenis maklumat anda..." style="display: none;">
+      </div>
+      <div class="form-group">
+        <label for="sumberMaklumat">Sumber Maklumat Utama</label>
+        <select id="sumberMaklumat">
+          <option value="">Pilih...</option>
+          <option value="Temu Bual Saksi/Subjek">Temu Bual Saksi/Subjek</option>
+          <option value="Dokumen Rasmi (Laporan Polis, Mahkamah)">Dokumen Rasmi (Laporan Polis, Mahkamah)</option>
+          <option value="Jejak Digital (Media Sosial, E-mel)">Jejak Digital (Media Sosial, E-mel)</option>
+          <option value="Laporan Kewangan/Perbankan">Laporan Kewangan/Perbankan</option>
+          <option value="Rakaman CCTV/Audio">Rakaman CCTV/Audio</option>
+          <option value="Data Risikan Sumber Terbuka (OSINT)">Data Risikan Sumber Terbuka (OSINT)</option>
+          <option value="Lain-lain (Tulis Sendiri)">Lain-lain (Tulis Sendiri)</option>
+        </select>
+        <input type="text" id="customSumberMaklumat" class="custom-input" placeholder="Tulis sumber maklumat anda..." style="display: none;">
+      </div>
+      <div class="form-group">
+        <label for="gayaBahasaNada">Gaya Bahasa dan Nada</label>
+        <select id="gayaBahasaNada">
+          <option value="">Pilih...</option>
+          <option value="Formal dan Objektif">Formal dan Objektif</option>
+          <option value="Interogatif dan Menyelidik">Interogatif dan Menyelidik</option>
+          <option value="Analitikal dan Kritis">Analitikal dan Kritis</option>
+          <option value="Naratif dan Deskriptif">Naratif dan Deskriptif</option>
+          <option value="Persuasif (untuk laporan)">Persuasif (untuk laporan)</option>
+          <option value="Lain-lain (Tulis Sendiri)">Lain-lain (Tulis Sendiri)</option>
+        </select>
+        <input type="text" id="customGayaBahasaNada" class="custom-input" placeholder="Tulis gaya bahasa anda..." style="display: none;">
+      </div>
+      <div class="form-group">
+        <label for="strukturGesa">Struktur Analisis/Gesa</label>
+        <select id="strukturGesa">
+          <option value="">Pilih...</option>
+          <option value="Soalan 5W+1H (Siapa, Apa, Bila, Di Mana, Mengapa, Bagaimana)">Soalan 5W+1H (Siapa, Apa, Bila, Di Mana, Mengapa, Bagaimana)</option>
+          <option value="Analisis Kronologi Kejadian">Analisis Kronologi Kejadian</option>
+          <option value="Analisis Rangkaian dan Hubungan">Analisis Rangkaian dan Hubungan</option>
+          <option value="Pembinaan dan Pengujian Hipotesis">Pembinaan dan Pengujian Hipotesis</option>
+          <option value="Pengecaman Kejanggalan dan Ketidakselarasan">Pengecaman Kejanggalan dan Ketidakselarasan</option>
+          <option value="Lain-lain (Tulis Sendiri)">Lain-lain (Tulis Sendiri)</option>
+        </select>
+        <input type="text" id="customStrukturGesa" class="custom-input" placeholder="Tulis struktur gesa anda..." style="display: none;">
+      </div>
+      <div class="form-group">
+        <label for="formatOutput">Format Output yang Dikehendaki</label>
+        <select id="formatOutput">
+          <option value="">Pilih...</option>
+          <option value="Ringkasan Laporan Siasatan">Ringkasan Laporan Siasatan</option>
+          <option value="Senarai Soalan untuk Temu Bual">Senarai Soalan untuk Temu Bual</option>
+          <option value="Garis Masa Kejadian Terperinci">Garis Masa Kejadian Terperinci</option>
+          <option value="Analisis Profil Subjek/Entiti">Analisis Profil Subjek/Entiti</option>
+          <option value="Draf Artikel Kewartawanan">Draf Artikel Kewartawanan</option>
+          <option value="Isi-isi Penting untuk Pembentangan">Isi-isi Penting untuk Pembentangan</option>
+          <option value="Lain-lain (Tulis Sendiri)">Lain-lain (Tulis Sendiri)</option>
+        </select>
+        <input type="text" id="customFormatOutput" class="custom-input" placeholder="Tulis format output anda..." style="display: none;">
+      </div>
     </div>
-  </div>
 
-  <footer>
-    <p>© 2025 Penjana Prompt Penyelidikan. Hak cipta terpelihara.</p>
-  </footer>
+    <div class="section">
+      <h2>Subjek/Entiti Siasatan</h2>
+      <div id="subjects"></div>
+      <button class="button button-primary" onclick="addSubject()">Tambah Subjek</button>
+    </div>
+
+    <div class="section">
+      <h2>Butiran Penting atau Arahan Khusus</h2>
+      <div id="details"></div>
+      <button class="button button-primary" onclick="addDetail()">Tambah Butiran Penting</button>
+    </div>
+
+    <div class="section">
+      <button class="button button-primary" onclick="generatePrompt()">Jana Prompt</button>
+      <button class="button button-primary" onclick="copyPrompt()">Salin Prompt</button>
+    </div>
+
+    <div id="message" class="message" style="display: none;"></div>
+    <div id="generatedPrompt" class="generated-prompt" style="display: none;"></div>
+  </div>
 
   <script>
-    // Basic interactivity for the CTA button
-    document.querySelector('.cta-button').addEventListener('click', (e) => {
-      e.preventDefault();
-      alert('Fungsi penjana akan tersedia tidak lama lagi!');
+    // State management
+    let state = {
+      jenisSiasatan: '',
+      tujuanUtamaSiasatan: '',
+      customTujuanUtamaSiasatan: '',
+      jenisMaklumat: '',
+      customJenisMaklumat: '',
+      sumberMaklumat: '',
+      customSumberMaklumat: '',
+      gayaBahasaNada: '',
+      customGayaBahasaNada: '',
+      strukturGesa: '',
+      customStrukturGesa: '',
+      formatOutput: '',
+      customFormatOutput: '',
+      subjekSiasatan: [],
+      butiranPenting: []
+    };
+
+    // Generate unique ID
+    function generateUniqueId() {
+      return `id-${Math.random().toString(36).substr(2, 9)}`;
+    }
+
+    // Toggle custom input visibility
+    function toggleCustomInput(selectId, inputId) {
+      const select = document.getElementById(selectId);
+      const input = document.getElementById(inputId);
+      input.style.display = select.value === 'Lain-lain (Tulis Sendiri)' ? 'block' : 'none';
+    }
+
+    // Initialize event listeners for dropdowns
+    ['tujuanUtamaSiasatan', 'jenisMaklumat', 'sumberMaklumat', 'gayaBahasaNada', 'strukturGesa', 'formatOutput'].forEach(field => {
+      const select = document.getElementById(field);
+      select.addEventListener('change', (e) => {
+        state[field] = e.target.value;
+        toggleCustomInput(field, `custom${field.charAt(0).toUpperCase() + field.slice(1)}`);
+        if (e.target.value !== 'Lain-lain (Tulis Sendiri)') {
+          state[`custom${field.charAt(0).toUpperCase() + field.slice(1)}`] = '';
+        }
+      });
+      document.getElementById(`custom${field.charAt(0).toUpperCase() + field.slice(1)}`).addEventListener('input', (e) => {
+        state[`custom${field.charAt(0).toUpperCase() + field.slice(1)}`] = e.target.value;
+      });
     });
- 
-import React, { useState, useCallback } from 'react';
 
-// Fungsi bantuan untuk menjana ID unik
-const generateUniqueId = () => `id-${Math.random().toString(36).substr(2, 9)}`;
+    document.getElementById('jenisSiasatan').addEventListener('change', (e) => {
+      state.jenisSiasatan = e.target.value;
+    });
 
-// Pilihan dropdown untuk gesa siasatan
-const options = {
-  jenisSiasatan: [
-    'Kuantitatif', 'Kualitatif', 'Kaedah Campuran'
-  ],
-  tujuanUtamaSiasatan: [
-    'Mendedahkan Fakta Kes Jenayah', 'Penyelidikan Kewartawanan Mendalam', 'Analisis Risikan',
-    'Pemeriksaan Latar Belakang', 'Kajian Kes Akademik', 'Lain-lain (Tulis Sendiri)'
-  ],
-  jenisMaklumat: [
-    'Alibi dan Garis Masa Kejadian', 'Motif Pelaku/Subjek', 'Hubungan Antara Individu/Entiti',
-    'Analisis Bukti Fizikal dan Digital', 'Pemeriksaan Laporan Kewangan', 'Pengecaman Corak Tingkah Laku',
-    'Lain-lain (Tulis Sendiri)'
-  ],
-  sumberMaklumat: [
-    'Temu Bual Saksi/Subjek', 'Dokumen Rasmi (Laporan Polis, Mahkamah)', 'Jejak Digital (Media Sosial, E-mel)',
-    'Laporan Kewangan/Perbankan', 'Rakaman CCTV/Audio', 'Data Risikan Sumber Terbuka (OSINT)',
-    'Lain-lain (Tulis Sendiri)'
-  ],
-  gayaBahasaNada: [
-    'Formal dan Objektif', 'Interogatif dan Menyelidik', 'Analitikal dan Kritis',
-    'Naratif dan Deskriptif', 'Persuasif (untuk laporan)', 'Lain-lain (Tulis Sendiri)'
-  ],
-  strukturGesa: [
-    'Soalan 5W+1H (Siapa, Apa, Bila, Di Mana, Mengapa, Bagaimana)', 'Analisis Kronologi Kejadian',
-    'Analisis Rangkaian dan Hubungan', 'Pembinaan dan Pengujian Hipotesis', 'Pengecaman Kejanggalan dan Ketidakselarasan',
-    'Lain-lain (Tulis Sendiri)'
-  ],
-  formatOutput: [
-    'Ringkasan Laporan Siasatan', 'Senarai Soalan untuk Temu Bual', 'Garis Masa Kejadian Terperinci',
-    'Analisis Profil Subjek/Entiti', 'Draf Artikel Kewartawanan', 'Isi-isi Penting untuk Pembentangan',
-    'Lain-lain (Tulis Sendiri)'
-  ],
-  perananSubjek: [
-    'Suspek', 'Saksi', 'Mangsa', 'Orang yang Disiasat', 'Sumber Maklumat', 'Lain-lain (Tulis Sendiri)'
-  ],
-  butiranPenting: [
-    'Fokus pada hubungan kewangan antara subjek A dan B', 'Cari kemungkinan alibi palsu',
-    'Analisis siaran media sosial dalam 3 bulan terakhir', 'Kecam kemungkinan motif balas dendam',
-    'Bandingkan keterangan saksi A dan saksi B', 'Lain-lain (Tulis Sendiri)'
-  ]
-};
+    // Add subject
+    function addSubject() {
+      const id = generateUniqueId();
+      state.subjekSiasatan.push({ id, nama: '', peranan: '', customPeranan: '', latarBelakang: '' });
+      renderSubjects();
+    }
 
-// Komponen Dropdown generik
-const Dropdown = ({ label, value, onChange, options, customValue, onCustomChange }) => (
-  <div className="mb-4">
-    <label className="block text-gray-700 text-sm font-bold mb-2">{label}</label>
-    <select
-      className="shadow appearance-none border rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white"
-      value={value}
-      onChange={onChange}
-    >
-      <option value="">Pilih...</option>
-      {options.map((option, index) => (
-        <option key={index} value={option}>{option}</option>
-      ))}
-    </select>
-    {value === 'Lain-lain (Tulis Sendiri)' && (
-      <input
-        type="text"
-        className="mt-2 shadow appearance-none border rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        placeholder={`Tulis ${label.toLowerCase()} sendiri...`}
-        value={customValue}
-        onChange={onCustomChange}
-      />
-    )}
-  </div>
-);
+    // Remove subject
+    function removeSubject(id) {
+      state.subjekSiasatan = state.subjekSiasatan.filter(subject => subject.id !== id);
+      renderSubjects();
+    }
 
-// Komponen Input Butiran Subjek
-const SubjekDetailInput = ({ label, value, onChange }) => (
-    <div className="mb-2">
-      <label className="block text-gray-700 text-sm font-bold mb-1">{label}</label>
-      <input
-        type="text"
-        className="shadow appearance-none border rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white text-sm"
-        placeholder={`Masukkan ${label.toLowerCase()}...`}
-        value={value}
-        onChange={onChange}
-      />
-    </div>
-  );
+    // Render subjects
+    function renderSubjects() {
+      const subjectsContainer = document.getElementById('subjects');
+      subjectsContainer.innerHTML = '';
+      state.subjekSiasatan.forEach((subject, index) => {
+        const subjectDiv = document.createElement('div');
+        subjectDiv.className = 'subject';
+        subjectDiv.innerHTML = `
+          <h3>Subjek ${index + 1}</h3>
+          <div class="form-group">
+            <label for="nama-${subject.id}">Nama</label>
+            <input type="text" id="nama-${subject.id}" value="${subject.nama}" placeholder="Nama subjek...">
+          </div>
+          <div class="form-group">
+            <label for="peranan-${subject.id}">Peranan</label>
+            <select id="peranan-${subject.id}">
+              <option value="">Pilih...</option>
+              <option value="Suspek">Suspek</option>
+              <option value="Saksi">Saksi</option>
+              <option value="Mangsa">Mangsa</option>
+              <option value="Orang yang Disiasat">Orang yang Disiasat</option>
+              <option value="Sumber Maklumat">Sumber Maklumat</option>
+              <option value="Lain-lain (Tulis Sendiri)">Lain-lain (Tulis Sendiri)</option>
+            </select>
+            <input type="text" id="customPeranan-${subject.id}" class="custom-input" placeholder="Tulis peranan anda..." style="display: none;">
+          </div>
+          <div class="form-group">
+            <label for="latarBelakang-${subject.id}">Latar Belakang</label>
+            <input type="text" id="latarBelakang-${subject.id}" value="${subject.latarBelakang}" placeholder="Latar belakang subjek...">
+          </div>
+          <button class="button button-danger" onclick="removeSubject('${subject.id}')">Padam</button>
+        `;
+        subjectsContainer.appendChild(subjectDiv);
 
-function App() {
-  const [promptOptions, setPromptOptions] = useState({
-    jenisSiasatan: '',
-    tujuanUtamaSiasatan: '',
-    customTujuanUtamaSiasatan: '',
-    jenisMaklumat: '',
-    customJenisMaklumat: '',
-    sumberMaklumat: '',
-    customSumberMaklumat: '',
-    gayaBahasaNada: '',
-    customGayaBahasaNada: '',
-    strukturGesa: '',
-    customStrukturGesa: '',
-    formatOutput: '',
-    customFormatOutput: '',
-    subjekSiasatan: [],
-    butiranPenting: [{ id: generateUniqueId(), value: '', custom: '' }],
-  });
-
-  const [generatedPrompt, setGeneratedPrompt] = useState('');
-  const [message, setMessage] = useState('');
-
-  // Mengendalikan perubahan untuk dropdown utama
-  const handleChange = (e, field) => {
-    const { value } = e.target;
-    setPromptOptions(prev => ({
-      ...prev,
-      [field]: value,
-      [`custom${field.charAt(0).toUpperCase() + field.slice(1)}`]: value === 'Lain-lain (Tulis Sendiri)' ? prev[`custom${field.charAt(0).toUpperCase() + field.slice(1)}`] : ''
-    }));
-  };
-
-  // Mengendalikan perubahan untuk input tersuai dropdown utama
-  const handleCustomChange = (e, field) => {
-    setPromptOptions(prev => ({
-      ...prev,
-      [`custom${field.charAt(0).toUpperCase() + field.slice(1)}`]: e.target.value
-    }));
-  };
-
-  // Mengendalikan perubahan untuk dropdown berulang
-  const handleRepeatableChange = (e, field, id) => {
-    const { value } = e.target;
-    setPromptOptions(prev => ({
-      ...prev,
-      [field]: prev[field].map(item =>
-        item.id === id ? { ...item, value, custom: value === 'Lain-lain (Tulis Sendiri)' ? item.custom : '' } : item
-      )
-    }));
-  };
-
-  // Mengendalikan perubahan untuk input tersuai dropdown berulang
-  const handleRepeatableCustomChange = (e, field, id) => {
-    setPromptOptions(prev => ({
-      ...prev,
-      [field]: prev[field].map(item =>
-        item.id === id ? { ...item, custom: e.target.value } : item
-      )
-    }));
-  };
-
-  // Menambah item baharu ke senarai berulang
-  const addRepeatableItem = (field, defaultValues = {}) => {
-    setPromptOptions(prev => ({
-      ...prev,
-      [field]: [...prev[field], { id: generateUniqueId(), value: '', custom: '', ...defaultValues }]
-    }));
-  };
-
-  // Memadam item daripada senarai berulang
-  const removeRepeatableItem = (field, id) => {
-    setPromptOptions(prev => ({
-      ...prev,
-      [field]: prev[field].filter(item => item.id !== id)
-    }));
-  };
-
-  // Mengendalikan perubahan butiran subjek
-  const handleSubjekDetailChange = (e, subjekId, detailField) => {
-    const { value } = e.target;
-    setPromptOptions(prev => ({
-      ...prev,
-      subjekSiasatan: prev.subjekSiasatan.map(subjek =>
-        subjek.id === subjekId ? { ...subjek, [detailField]: value } : subjek
-      )
-    }));
-  };
-
-  const generatePromptText = useCallback(() => {
-    const parts = [];
-
-    const getValue = (field) => {
-      const selectedValue = promptOptions[field];
-      if (field === 'jenisSiasatan') {
-          return selectedValue;
-      }
-      const customValue = promptOptions[`custom${field.charAt(0).toUpperCase() + field.slice(1)}`];
-      return selectedValue === 'Lain-lain (Tulis Sendiri)' ? customValue : selectedValue;
-    };
-
-    const getRepeatableValues = (field) => {
-      return promptOptions[field]
-        .map(item => (item.value === 'Lain-lain (Tulis Sendiri)' ? item.custom : item.value))
-        .filter(Boolean);
-    };
-
-    const getSubjekDetails = (subjek) => {
-      const details = [];
-      if (subjek.nama) details.push(`Nama: ${subjek.nama}`);
-      if (subjek.peranan) details.push(`Peranan: ${subjek.peranan}`);
-      if (subjek.latarBelakang) details.push(`Latar Belakang: ${subjek.latarBelakang}`);
-      return details.join(', ');
-    };
-    
-    parts.push("Anda ialah seorang pembantu siasatan AI yang pakar. Berdasarkan maklumat berikut, jana output yang diminta.");
-    parts.push("---");
-
-
-    const appendIfPresent = (label, value) => {
-      if (value) parts.push(`**${label}:** ${value}`);
-    };
-
-    appendIfPresent('Jenis Siasatan', getValue('jenisSiasatan'));
-    appendIfPresent('Tujuan Utama Siasatan', getValue('tujuanUtamaSiasatan'));
-    appendIfPresent('Jenis Maklumat yang Dicari', getValue('jenisMaklumat'));
-    appendIfPresent('Sumber Maklumat Utama', getValue('sumberMaklumat'));
-    appendIfPresent('Gaya Bahasa dan Nada', getValue('gayaBahasaNada'));
-    appendIfPresent('Struktur Analisis/Gesa', getValue('strukturGesa'));
-    appendIfPresent('Format Output yang Dikehendaki', getValue('formatOutput'));
-    
-    if (promptOptions.subjekSiasatan.length > 0) {
-        parts.push("\n**Subjek/Entiti Utama:**");
-        promptOptions.subjekSiasatan.forEach((subjek, index) => {
-        const details = getSubjekDetails(subjek);
-        if (details) parts.push(`- Subjek ${index + 1}: ${details}`);
+        // Event listeners for subject inputs
+        document.getElementById(`nama-${subject.id}`).addEventListener('input', (e) => {
+          subject.nama = e.target.value;
+        });
+        document.getElementById(`peranan-${subject.id}`).addEventListener('change', (e) => {
+          subject.peranan = e.target.value;
+          toggleCustomInput(`peranan-${subject.id}`, `customPeranan-${subject.id}`);
+          if (e.target.value !== 'Lain-lain (Tulis Sendiri)') {
+            subject.customPeranan = '';
+          }
+        });
+        document.getElementById(`customPeranan-${subject.id}`).addEventListener('input', (e) => {
+          subject.customPeranan = e.target.value;
+        });
+        document.getElementById(`latarBelakang-${subject.id}`).addEventListener('input', (e) => {
+          subject.latarBelakang = e.target.value;
+        });
       });
     }
 
-    const butiranPentingValues = getRepeatableValues('butiranPenting');
-    if (butiranPentingValues.length > 0) {
+    // Add detail
+    function addDetail() {
+      const id = generateUniqueId();
+      state.butiranPenting.push({ id, value: '', custom: '' });
+      renderDetails();
+    }
+
+    // Remove detail
+    function removeDetail(id) {
+      state.butiranPenting = state.butiranPenting.filter(detail => detail.id !== id);
+      renderDetails();
+    }
+
+    // Render details
+    function renderDetails() {
+      const detailsContainer = document.getElementById('details');
+      detailsContainer.innerHTML = '';
+      state.butiranPenting.forEach((detail, index) => {
+        const detailDiv = document.createElement('div');
+        detailDiv.className = 'detail';
+        detailDiv.innerHTML = `
+          <div class="form-group">
+            <label for="butiranPenting-${detail.id}">Butiran Penting ${index + 1}</label>
+            <select id="butiranPenting-${detail.id}">
+              <option value="">Pilih...</option>
+              <option value="Fokus pada hubungan kewangan antara subjek A dan B">Fokus pada hubungan kewangan antara subjek A dan B</option>
+              <option value="Cari kemungkinan alibi palsu">Cari kemungkinan alibi palsu</option>
+              <option value="Analisis siaran media sosial dalam 3 bulan terakhir">Analisis siaran media sosial dalam 3 bulan terakhir</option>
+              <option value="Kecam kemungkinan motif balas dendam">Kecam kemungkinan motif balas dendam</option>
+              <option value="Bandingkan keterangan saksi A dan saksi B">Bandingkan keterangan saksi A dan saksi B</option>
+              <option value="Lain-lain (Tulis Sendiri)">Lain-lain (Tulis Sendiri)</option>
+            </select>
+            <input type="text" id="customButiranPenting-${detail.id}" class="custom-input" placeholder="Tulis butiran penting anda..." style="display: none;">
+          </div>
+          ${state.butiranPenting.length > 1 ? `<button class="button button-danger" onclick="removeDetail('${detail.id}')">Padam</button>` : ''}
+        `;
+        detailsContainer.appendChild(detailDiv);
+
+        // Event listeners for detail inputs
+        document.getElementById(`butiranPenting-${detail.id}`).addEventListener('change', (e) => {
+          detail.value = e.target.value;
+          toggleCustomInput(`butiranPenting-${detail.id}`, `customButiranPenting-${detail.id}`);
+          if (e.target.value !== 'Lain-lain (Tulis Sendiri)') {
+            detail.custom = '';
+          }
+        });
+        document.getElementById(`customButiranPenting-${detail.id}`).addEventListener('input', (e) => {
+          detail.custom = e.target.value;
+        });
+      });
+    }
+
+    // Generate prompt
+    function generatePrompt() {
+      const parts = [];
+
+      const getValue = (field) => {
+        const selectedValue = state[field];
+        if (field === 'jenisSiasatan') {
+          return selectedValue;
+        }
+        const customValue = state[`custom${field.charAt(0).toUpperCase() + field.slice(1)}`];
+        return selectedValue === 'Lain-lain (Tulis Sendiri)' ? customValue : selectedValue;
+      };
+
+      const getSubjekDetails = (subjek) => {
+        const details = [];
+        if (subjek.nama) details.push(`Nama: ${subjek.nama}`);
+        if (subjek.peranan) details.push(`Peranan: ${subjek.peranan === 'Lain-lain (Tulis Sendiri)' ? subjek.customPeranan : subjek.peranan}`);
+        if (subjek.latarBelakang) details.push(`Latar Belakang: ${subjek.latarBelakang}`);
+        return details.join(', ');
+      };
+
+      parts.push("Anda ialah seorang pembantu siasatan AI yang pakar. Berdasarkan maklumat berikut, jana output yang diminta.");
+      parts.push("---");
+
+      const appendIfPresent = (label, value) => {
+        if (value) parts.push(`**${label}:** ${value}`);
+      };
+
+      appendIfPresent('Jenis Siasatan', getValue('jenisSiasatan'));
+      appendIfPresent('Tujuan Utama Siasatan', getValue('tujuanUtamaSiasatan'));
+      appendIfPresent('Jenis Maklumat yang Dicari', getValue('jenisMaklumat'));
+      appendIfPresent('Sumber Maklumat Utama', getValue('sumberMaklumat'));
+      appendIfPresent('Gaya Bahasa dan Nada', getValue('gayaBahasaNada'));
+      appendIfPresent('Struktur Analisis/Gesa', getValue('strukturGesa'));
+      appendIfPresent('Format Output yang Dikehendaki', getValue('formatOutput'));
+
+      if (state.subjekSiasatan.length > 0) {
+        parts.push("\n**Subjek/Entiti Utama:**");
+        state.subjekSiasatan.forEach((subjek, index) => {
+          const details = getSubjekDetails(subjek);
+          if (details) parts.push(`- Subjek ${index + 1}: ${details}`);
+        });
+      }
+
+      const butiranPentingValues = state.butiranPenting
+        .map(item => (item.value === 'Lain-lain (Tulis Sendiri)' ? item.custom : item.value))
+        .filter(Boolean);
+      if (butiranPentingValues.length > 0) {
         parts.push("\n**Butiran Penting atau Arahan Khusus:**");
         butiranPentingValues.forEach(detail => parts.push(`- ${detail}`));
+      }
+
+      parts.push("\n---");
+      parts.push("Sila proses permintaan ini secara komprehensif dan terperinci.");
+
+      const promptText = parts.filter(Boolean).join('\n');
+      const generatedPrompt = document.getElementById('generatedPrompt');
+      generatedPrompt.style.display = 'block';
+      generatedPrompt.textContent = promptText;
+
+      const message = document.getElementById('message');
+      message.className = 'message success';
+      message.style.display = 'block';
+      message.textContent = 'Prompt berjaya dijana!';
     }
-    
-    parts.push("\n---");
-    parts.push("Sila proses permintaan ini secara komprehensif dan terperinci.");
 
-
-    return parts.filter(Boolean).join('\n');
-  }, [promptOptions]);
-
-  const handleGeneratePrompt = () => {
-    const prompt = generatePromptText();
-    setGeneratedPrompt(prompt);
-    setMessage('Gesa berjaya dijana!');
-  };
-
-  const copyToClipboard = () => {
-    if (!generatedPrompt) {
-        setMessage('Tiada gesa untuk disalin. Sila jana gesa terlebih dahulu.');
+    // Copy prompt to clipboard
+    function copyPrompt() {
+      const generatedPrompt = document.getElementById('generatedPrompt');
+      if (!generatedPrompt.textContent) {
+        const message = document.getElementById('message');
+        message.className = 'message error';
+        message.style.display = 'block';
+        message.textContent = 'Tiada prompt untuk disalin. Sila jana prompt terlebih dahulu.';
         return;
-    }
-    try {
+      }
+
       const textarea = document.createElement('textarea');
-      textarea.value = generatedPrompt;
-      textarea.style.position = 'fixed';
-      textarea.style.opacity = '0';
+      textarea.value = generatedPrompt.textContent;
       document.body.appendChild(textarea);
       textarea.select();
-      document.execCommand('copy');
+      try {
+        document.execCommand('copy');
+        const message = document.getElementById('message');
+        message.className = 'message success';
+        message.style.display = 'block';
+        message.textContent = 'Prompt berjaya disalin ke papan keratan!';
+      } catch (err) {
+        const message = document.getElementById('message');
+        message.className = 'message error';
+        message.style.display = 'block';
+        message.textContent = 'Gagal menyalin prompt.';
+      }
       document.body.removeChild(textarea);
-      setMessage('Gesa berjaya disalin ke papan keratan!');
-    } catch (err) {
-      console.error('Gagal menyalin: ', err);
-      setMessage('Gagal menyalin gesa.');
     }
-  };
 
-
-  return (
-    <div className="min-h-screen bg-gray-100 text-gray-800 p-4 sm:p-6 lg:p-8 font-sans">
-      <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-2xl p-6 sm:p-8 lg:p-10 border border-gray-200">
-        <div className="text-center mb-8">
-            <h1 className="text-4xl sm:text-5xl font-bold text-gray-800 mb-2">
-            Penjana Prompt Penyelidikan
-            </h1>
-            <p className="text-lg text-gray-600">Dibina untuk Gemini Pro</p>
-        </div>
-        
-
-        {/* Pilihan Gesa Utama */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 mb-6">
-          <Dropdown
-            label="Jenis Siasatan"
-            value={promptOptions.jenisSiasatan}
-            onChange={(e) => handleChange(e, 'jenisSiasatan')}
-            options={options.jenisSiasatan}
-          />
-          <Dropdown
-            label="Tujuan Utama Siasatan"
-            value={promptOptions.tujuanUtamaSiasatan}
-            onChange={(e) => handleChange(e, 'tujuanUtamaSiasatan')}
-            options={options.tujuanUtamaSiasatan}
-            customValue={promptOptions.customTujuanUtamaSiasatan}
-            onCustomChange={(e) => handleCustomChange(e, 'tujuanUtamaSiasatan')}
-          />
-          <Dropdown
-            label="Jenis Maklumat yang Dicari"
-            value={promptOptions.jenisMaklumat}
-            onChange={(e) => handleChange(e, 'jenisMaklumat')}
-            options={options.jenisMaklumat}
-            customValue={promptOptions.customJenisMaklumat}
-            onCustomChange={(e) => handleCustomChange(e, 'jenisMaklumat')}
-          />
-          <Dropdown
-            label="Sumber Maklumat Utama"
-            value={promptOptions.sumberMaklumat}
-            onChange={(e) => handleChange(e, 'sumberMaklumat')}
-            options={options.sumberMaklumat}
-            customValue={promptOptions.customSumberMaklumat}
-            onCustomChange={(e) => handleCustomChange(e, 'sumberMaklumat')}
-          />
-          <Dropdown
-            label="Gaya Bahasa & Nada"
-            value={promptOptions.gayaBahasaNada}
-            onChange={(e) => handleChange(e, 'gayaBahasaNada')}
-            options={options.gayaBahasaNada}
-            customValue={promptOptions.customGayaBahasaNada}
-            onCustomChange={(e) => handleCustomChange(e, 'gayaBahasaNada')}
-          />
-          <Dropdown
-            label="Struktur Analisis/Gesa"
-            value={promptOptions.strukturGesa}
-            onChange={(e) => handleChange(e, 'strukturGesa')}
-            options={options.strukturGesa}
-            customValue={promptOptions.customStrukturGesa}
-            onCustomChange={(e) => handleCustomChange(e, 'strukturGesa')}
-          />
-          <Dropdown
-            label="Format Output yang Dikehendaki"
-            value={promptOptions.formatOutput}
-            onChange={(e) => handleChange(e, 'formatOutput')}
-            options={options.formatOutput}
-            customValue={promptOptions.customFormatOutput}
-            onCustomChange={(e) => handleCustomChange(e, 'formatOutput')}
-          />
-        </div>
-
-        {/* Bahagian Subjek */}
-        <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
-          <h3 className="text-xl font-bold text-gray-800 mb-4">Subjek/Entiti Siasatan</h3>
-          {promptOptions.subjekSiasatan.map((subjek, index) => (
-            <div key={subjek.id} className="bg-white p-4 rounded-md shadow-inner mb-6 border border-gray-200">
-              <div className="flex justify-between items-center mb-4">
-                <h4 className="font-semibold text-gray-800">Subjek {index + 1}</h4>
-                <button
-                  onClick={() => removeRepeatableItem('subjekSiasatan', subjek.id)}
-                  className="px-3 py-1 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors duration-200 text-sm"
-                >
-                  Padam
-                </button>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-4 gap-y-2">
-                <SubjekDetailInput
-                  label="Nama Subjek/Entiti"
-                  value={subjek.nama}
-                  onChange={(e) => handleSubjekDetailChange(e, subjek.id, 'nama')}
-                />
-                <Dropdown
-                    label="Peranan dalam Kes"
-                    value={subjek.peranan}
-                    onChange={(e) => handleSubjekDetailChange(e, subjek.id, 'peranan')}
-                    options={options.perananSubjek}
-                    customValue={subjek.peranan === 'Lain-lain (Tulis Sendiri)' ? subjek.customPeranan : ''}
-                    onCustomChange={(e) => handleSubjekDetailChange(e, subjek.id, 'customPeranan')}
-                />
-                <SubjekDetailInput
-                  label="Latar Belakang/Maklumat Penting"
-                  value={subjek.latarBelakang}
-                  onChange={(e) => handleSubjekDetailChange(e, subjek.id, 'latarBelakang')}
-                />
-              </div>
-            </div>
-          ))}
-          <button
-            onClick={() => addRepeatableItem('subjekSiasatan', { nama: '', peranan: '', latarBelakang: '' })}
-            className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 shadow-md"
-          >
-            Tambah Subjek
-          </button>
-        </div>
-
-        {/* Bahagian Butiran Penting */}
-        <div className="mb-8 p-4 bg-gray-50 rounded-lg border border-gray-200">
-          <h3 className="text-xl font-bold text-gray-800 mb-4">Butiran Penting atau Arahan Khusus</h3>
-          {promptOptions.butiranPenting.map((item, index) => (
-            <div key={item.id} className="flex items-end gap-4 mb-4">
-              <div className="flex-grow">
-                <Dropdown
-                  label={`Butiran Penting ${index + 1}`}
-                  value={item.value}
-                  onChange={(e) => handleRepeatableChange(e, 'butiranPenting', item.id)}
-                  options={options.butiranPenting}
-                  customValue={item.custom}
-                  onCustomChange={(e) => handleRepeatableCustomChange(e, 'butiranPenting', item.id)}
-                />
-              </div>
-              {promptOptions.butiranPenting.length > 1 && (
-                <button
-                  onClick={() => removeRepeatableItem('butiranPenting', item.id)}
-                  className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors duration-200 shadow-md mb-2"
-                >
-                  Padam
-                </button>
-              )}
-            </div>
-          ))}
-          <button
-            onClick={() => addRepeatableItem('butiranPenting')}
-            className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 shadow-md"
-          >
-            Tambah Butiran Penting
-          </button>
-        </div>
-
-        {/* Butang Tindakan */}
-        <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
-          <button
-            onClick={handleGeneratePrompt}
-            className="flex-1 px-8 py-3 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 transition-transform transform hover:scale-105 duration-200 shadow-lg text-lg"
-          >
-            Jana Gesa Siasatan
-          </button>
-          <button
-            onClick={copyToClipboard}
-            className="flex-1 px-8 py-3 bg-gray-700 text-white font-bold rounded-lg hover:bg-gray-800 transition-transform transform hover:scale-105 duration-200 shadow-lg text-lg"
-          >
-            Salin Gesa
-          </button>
-        </div>
-
-        {message && (
-          <div className="mt-6 p-3 bg-blue-100 text-blue-800 rounded-md text-center font-medium transition-opacity duration-300">
-            {message}
-          </div>
-        )}
-
-        {generatedPrompt && (
-          <div className="mt-8 p-6 bg-gray-800 text-white rounded-lg border border-gray-600 shadow-inner">
-            <h3 className="text-xl font-bold text-gray-100 mb-4">Gesa yang Dijana:</h3>
-            <pre className="whitespace-pre-wrap font-mono text-sm text-gray-200 bg-gray-900 p-4 rounded-md">
-              {generatedPrompt}
-            </pre>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-export default App;
-     </script>
+    // Initialize with one detail
+    addDetail();
+  </script>
 </body>
 </html>
