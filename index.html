@@ -186,41 +186,44 @@
         <label for="sumberMaklumat">Sumber Maklumat Utama</label>
         <select id="sumberMaklumat">
           <option value="">Pilih...</option>
-          <option value="Temu Bual Saksi/Subjek">Temu Bual Saksi/Subjek</option>
-          <option value="Dokumen Rasmi (Laporan Polis, Mahkamah)">Dokumen Rasmi (Laporan Polis, Mahkamah)</option>
-          <option value="Jejak Digital (Media Sosial, E-mel)">Jejak Digital (Media Sosial, E-mel)</option>
-          <option value="Laporan Kewangan/Perbankan">Laporan Kewangan/Perbankan</option>
-          <option value="Rakaman CCTV/Audio">Rakaman CCTV/Audio</option>
-          <option value="Data Risikan Sumber Terbuka (OSINT)">Data Risikan Sumber Terbuka (OSINT)</option>
+          <option value="Sumber Wahyu dan Tradisi Islam">Sumber Wahyu dan Tradisi Islam</option>
+          <option value="Sumber Ilmiah Akademik">Sumber Ilmiah Akademik</option>
+          <option value="Sumber Rasmi dan Dokumen Kerajaan">Sumber Rasmi dan Dokumen Kerajaan</option>
+          <option value="Sumber Data Lapangan dan Empirikal">Sumber Data Lapangan dan Empirikal</option>
+          <option value="Sumber Manuskrip dan Warisan Tempatan">Sumber Manuskrip dan Warisan Tempatan</option>
+          <option value="Sumber Digital dan Multimedia">Sumber Digital dan Multimedia</option>
+          <option value="Sumber Terbuka (OSINT)">Sumber Terbuka (OSINT)</option>
           <option value="Lain-lain (Tulis Sendiri)">Lain-lain (Tulis Sendiri)</option>
         </select>
         <input type="text" id="customSumberMaklumat" class="custom-input" placeholder="Tulis sumber maklumat anda..." style="display: none;">
       </div>
       <div class="form-group">
-        <label for="gayaBahasaNada">Gaya Bahasa dan Nada</label>
-        <select id="gayaBahasaNada">
+        <label for="gayaBahasaNadaPenulisan">Gaya Bahasa dan Nada Penulisan</label>
+        <select id="gayaBahasaNadaPenulisan">
           <option value="">Pilih...</option>
           <option value="Formal dan Objektif">Formal dan Objektif</option>
-          <option value="Interogatif dan Menyelidik">Interogatif dan Menyelidik</option>
+          <option value="Bahasa Berstruktur">Bahasa Berstruktur</option>
           <option value="Analitikal dan Kritis">Analitikal dan Kritis</option>
           <option value="Naratif dan Deskriptif">Naratif dan Deskriptif</option>
           <option value="Persuasif (untuk laporan)">Persuasif (untuk laporan)</option>
           <option value="Lain-lain (Tulis Sendiri)">Lain-lain (Tulis Sendiri)</option>
         </select>
-        <input type="text" id="customGayaBahasaNada" class="custom-input" placeholder="Tulis gaya bahasa anda..." style="display: none;">
+        <input type="text" id="customgayaBahasaNadaPenulisan" class="custom-input" placeholder="Tulis gaya bahasa anda..." style="display: none;">
       </div>
       <div class="form-group">
-        <label for="strukturGesa">Struktur Analisis/Gesa</label>
-        <select id="strukturGesa">
+        <label for="strukturAnalisis">Struktur Analisis</label>
+        <select id="strukturAnalisis">
           <option value="">Pilih...</option>
           <option value="Soalan 5W+1H (Siapa, Apa, Bila, Di Mana, Mengapa, Bagaimana)">Soalan 5W+1H (Siapa, Apa, Bila, Di Mana, Mengapa, Bagaimana)</option>
           <option value="Analisis Kronologi Kejadian">Analisis Kronologi Kejadian</option>
-          <option value="Analisis Rangkaian dan Hubungan">Analisis Rangkaian dan Hubungan</option>
+          <option value="Penegasan Tujuan dan Soalan Kajian">Penegasan Tujuan dan Soalan Kajian</option>
+          <option value="Pengenalpastian Tema atau Kategori Analisis">Pengenalpastian Tema atau Kategori Analisis</option>
+          <option value="Analisis dan Interpretasi">Analisis dan Interpretasi</option>
           <option value="Pembinaan dan Pengujian Hipotesis">Pembinaan dan Pengujian Hipotesis</option>
           <option value="Pengecaman Kejanggalan dan Ketidakselarasan">Pengecaman Kejanggalan dan Ketidakselarasan</option>
           <option value="Lain-lain (Tulis Sendiri)">Lain-lain (Tulis Sendiri)</option>
         </select>
-        <input type="text" id="customStrukturGesa" class="custom-input" placeholder="Tulis struktur gesa anda..." style="display: none;">
+        <input type="text" id="customstrukturAnalisis" class="custom-input" placeholder="Tulis struktur gesa anda..." style="display: none;">
       </div>
       <div class="form-group">
         <label for="formatOutput">Format Output yang Dikehendaki</label>
@@ -269,10 +272,10 @@
       customJenisMaklumat: '',
       sumberMaklumat: '',
       customSumberMaklumat: '',
-      gayaBahasaNada: '',
-      customGayaBahasaNada: '',
-      strukturGesa: '',
-      customStrukturGesa: '',
+      gayaBahasaNadaPenulisan: '',
+      customgayaBahasaNadaPenulisan: '',
+      strukturAnalisis: '',
+      customstrukturAnalisis: '',
       formatOutput: '',
       customFormatOutput: '',
       subjekPenyelidikan: [],
@@ -292,7 +295,7 @@
     }
 
     // Initialize event listeners for dropdowns
-    ['tujuanUtamaPenyelidikan', 'jenisMaklumat', 'sumberMaklumat', 'gayaBahasaNada', 'strukturGesa', 'formatOutput'].forEach(field => {
+    ['tujuanUtamaPenyelidikan', 'jenisMaklumat', 'sumberMaklumat', 'gayaBahasaNadaPenulisan', 'strukturAnalisis', 'formatOutput'].forEach(field => {
       const select = document.getElementById(field);
       select.addEventListener('change', (e) => {
         state[field] = e.target.value;
@@ -461,8 +464,8 @@
       appendIfPresent('Tujuan Utama Penyelidikan', getValue('tujuanUtamaPenyelidikan'));
       appendIfPresent('Jenis Maklumat yang Dicari', getValue('jenisMaklumat'));
       appendIfPresent('Sumber Maklumat Utama', getValue('sumberMaklumat'));
-      appendIfPresent('Gaya Bahasa dan Nada', getValue('gayaBahasaNada'));
-      appendIfPresent('Struktur Analisis/Gesa', getValue('strukturGesa'));
+      appendIfPresent('Gaya Bahasa dan Nada Penulisan', getValue('gayaBahasaNadaPenulisan'));
+      appendIfPresent('Struktur Analisis/Gesa', getValue('strukturAnalisis'));
       appendIfPresent('Format Output yang Dikehendaki', getValue('formatOutput'));
 
       if (state.subjekPenyelidikan.length > 0) {
