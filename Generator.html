@@ -1,535 +1,202 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ms">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Penjana Prompt Penyelidikan</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
-
-    body {
-      background-color: #f3f4f6;
-      color: #1f2937;
-      line-height: 1.6;
-      padding: 20px;
-    }
-
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    h1 {
-      text-align: center;
-      color: #1e40af;
-      margin-bottom: 20px;
-    }
-
-    .section {
-      margin-bottom: 20px;
-    }
-
-    .section h2 {
-      font-size: 1.5rem;
-      color: #1e40af;
-      margin-bottom: 10px;
-    }
-
-    .form-group {
-      margin-bottom: 15px;
-    }
-
-    label {
-      display: block;
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-
-    select, input[type="text"], textarea {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #d1d5db;
-      border-radius: 4px;
-      font-size: 1rem;
-    }
-
-    .custom-input {
-      margin-top: 10px;
-    }
-
-    .subject, .detail {
-      border: 1px solid #e5e7eb;
-      padding: 10px;
-      border-radius: 4px;
-      margin-bottom: 10px;
-    }
-
-    .button {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 1rem;
-      margin-right: 10px;
-      margin-bottom: 10px;
-    }
-
-    .button-primary {
-      background-color: #1e40af;
-      color: white;
-    }
-
-    .button-primary:hover {
-      background-color: #1e3a8a;
-    }
-
-    .button-danger {
-      background-color: #dc2626;
-      color: white;
-    }
-
-    .button-danger:hover {
-      background-color: #b91c1c;
-    }
-
-    .message {
-      margin-top: 10px;
-      padding: 10px;
-      border-radius: 4px;
-    }
-
-    .message.success {
-      background-color: #dcfce7;
-      color: #15803d;
-    }
-
-    .message.error {
-      background-color: #fee2e2;
-      color: #b91c1c;
-    }
-
-    .generated-prompt {
-      margin-top: 20px;
-      padding: 15px;
-      background-color: #f9fafb;
-      border: 1px solid #e5e7eb;
-      border-radius: 4px;
-      white-space: pre-wrap;
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        padding: 15px;
-      }
-
-      h1 {
-        font-size: 1.8rem;
-      }
-    }
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1 { text-align: center; }
+    .section { margin-bottom: 20px; }
+    label { display: block; margin-bottom: 5px; font-weight: bold; }
+    select, input[type="text"], textarea { width: 100%; padding: 8px; margin-bottom: 10px; }
+    button { padding: 10px 20px; margin-right: 10px; }
+    #generatedPrompt { margin-top: 20px; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Penjana Prompt Penyelidikan</h1>
+  <h1>Penjana Prompt Penyelidikan</h1>
 
-    <div class="section">
-      <h2>Pilihan Prompt</h2>
-      <div class="form-group">
-        <label for="jenisPenyelidikan">Jenis Penyelidikan</label>
-        <select id="jenisPenyelidikan">
-          <option value="">Pilih...</option>
-          <option value="Kuantitatif">Kuantitatif</option>
-          <option value="Kualitatif">Kualitatif</option>
-          <option value="Kaedah Campuran">Kaedah Campuran</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="tujuanUtamaPenyelidikan">Tujuan Utama Penyelidikan</label>
-        <select id="tujuanUtamaPenyelidikan">
-          <option value="">Pilih...</option>
-          <option value="Mengembangkan Ilmu dan Kefahaman Secara Holistik">Mengembangkan Ilmu dan Kefahaman Secara Holistik</option>
-          <option value="Memperjelas Kefahaman dan Menangkis Salah Faham">Memperjelas Kefahaman dan Menangkis Salah Faham</option>
-          <option value="Memartabatkan Pendidikan Islam dan Kurikulum Bersepadu">Memartabatkan Pendidikan Islam dan Kurikulum Bersepadu</option>
-          <option value="Penyelidikan Latar Belakang Sistematik">Penyelidikan Latar Belakang Sistematik</option>
-          <option value="Kajian Kes Akademik">Kajian Kes Akademik</option>
-          <option value="Memartabatkan Pendidikan Islam dan Kurikulum Bersepadu">Memartabatkan Pendidikan Islam dan Kurikulum Bersepadu</option>
-          <option value="Pembangunan Sosioekonomi">Pembangunan Sosioekonomi</option>
-          <option value="Lain-lain (Tulis Sendiri)">Lain-lain (Tulis Sendiri)</option>
-        </select>
-        <input type="text" id="customTujuanUtamaPenyelidikan" class="custom-input" placeholder="Tulis tujuan anda..." style="display: none;">
-      </div>
-      <div class="form-group">
-        <label for="jenisMaklumat">Jenis Maklumat yang Dicari</label>
-        <select id="jenisMaklumat">
-          <option value="">Pilih...</option>
-          <option value="Maklumat Teoretikal dan Konseptual (Konsep & Prinsip)">Maklumat Teoretikal dan Konseptual (Konsep & Prinsip)</option>
-          <option value="Maklumat Empirikal / Lapangan (Data Dunia Sebenar)">Maklumat Empirikal / Lapangan (Data Dunia Sebenar)</option>
-          <option value="Maklumat Dokumentasi dan Polisi">Maklumat Dokumentasi dan Polisi</option>
-          <option value="Maklumat Statistik dan Demografi">Maklumat Statistik dan Demografi</option>
-          <option value="Maklumat Manuskrip dan Warisan Ilmu Islam">Maklumat Manuskrip dan Warisan Ilmu Islam</option>
-          <option value="Maklumat Interdisiplin dan Kontemporari">Maklumat Interdisiplin dan Kontemporari</option>
-          <option value="Maklumat Pemikiran dan Isu">Maklumat Pemikiran dan Isu</option> 
-          <option value="Lain-lain (Tulis Sendiri)">Lain-lain (Tulis Sendiri)</option>
-        </select>
-        <input type="text" id="customJenisMaklumat" class="custom-input" placeholder="Tulis jenis maklumat anda..." style="display: none;">
-      </div>
-      <div class="form-group">
-        <label for="sumberMaklumat">Sumber Maklumat Utama</label>
-        <select id="sumberMaklumat">
-          <option value="">Pilih...</option>
-          <option value="Sumber Wahyu dan Tradisi Islam">Sumber Wahyu dan Tradisi Islam</option>
-          <option value="Sumber Ilmiah Akademik">Sumber Ilmiah Akademik</option>
-          <option value="Sumber Rasmi dan Dokumen Kerajaan">Sumber Rasmi dan Dokumen Kerajaan</option>
-          <option value="Sumber Data Lapangan dan Empirikal">Sumber Data Lapangan dan Empirikal</option>
-          <option value="Sumber Manuskrip dan Warisan Tempatan">Sumber Manuskrip dan Warisan Tempatan</option>
-          <option value="Sumber Digital dan Multimedia">Sumber Digital dan Multimedia</option>
-          <option value="Sumber Terbuka (OSINT)">Sumber Terbuka (OSINT)</option>
-          <option value="Lain-lain (Tulis Sendiri)">Lain-lain (Tulis Sendiri)</option>
-        </select>
-        <input type="text" id="customSumberMaklumat" class="custom-input" placeholder="Tulis sumber maklumat anda..." style="display: none;">
-      </div>
-      <div class="form-group">
-        <label for="gayaBahasaNadaPenulisan">Gaya Bahasa dan Nada Penulisan</label>
-        <select id="gayaBahasaNadaPenulisan">
-          <option value="">Pilih...</option>
-          <option value="Formal dan Objektif">Formal dan Objektif</option>
-          <option value="Bahasa Berstruktur">Bahasa Berstruktur</option>
-          <option value="Analitikal dan Kritis">Analitikal dan Kritis</option>
-          <option value="Naratif dan Deskriptif">Naratif dan Deskriptif</option>
-          <option value="Persuasif (untuk laporan)">Persuasif (untuk laporan)</option>
-          <option value="Lain-lain (Tulis Sendiri)">Lain-lain (Tulis Sendiri)</option>
-        </select>
-        <input type="text" id="customgayaBahasaNadaPenulisan" class="custom-input" placeholder="Tulis gaya bahasa anda..." style="display: none;">
-      </div>
-      <div class="form-group">
-        <label for="strukturAnalisis">Struktur Analisis</label>
-        <select id="strukturAnalisis">
-          <option value="">Pilih...</option>
-          <option value="Soalan 5W+1H (Siapa, Apa, Bila, Di Mana, Mengapa, Bagaimana)">Soalan 5W+1H (Siapa, Apa, Bila, Di Mana, Mengapa, Bagaimana)</option>
-          <option value="Analisis Kronologi Kejadian">Analisis Kronologi Kejadian</option>
-          <option value="Penegasan Tujuan dan Soalan Kajian">Penegasan Tujuan dan Soalan Kajian</option>
-          <option value="Pengenalpastian Tema atau Kategori Analisis">Pengenalpastian Tema atau Kategori Analisis</option>
-          <option value="Analisis dan Interpretasi">Analisis dan Interpretasi</option>
-          <option value="Pembinaan dan Pengujian Hipotesis">Pembinaan dan Pengujian Hipotesis</option>
-          <option value="Pengecaman Kejanggalan dan Ketidakselarasan">Pengecaman Kejanggalan dan Ketidakselarasan</option>
-          <option value="Lain-lain (Tulis Sendiri)">Lain-lain (Tulis Sendiri)</option>
-        </select>
-        <input type="text" id="customstrukturAnalisis" class="custom-input" placeholder="Tulis struktur gesa anda..." style="display: none;">
-      </div>
-      <div class="form-group">
-        <label for="formatOutput">Format Output yang Dikehendaki</label>
-        <select id="formatOutput">
-          <option value="">Pilih...</option>
-          <option value="Ringkasan Laporan Penyelidikan">Ringkasan Laporan Penyelidikan</option>
-          <option value="Senarai Soalan untuk Temu Bual">Senarai Soalan untuk Temu Bual</option>
-          <option value="Garis Masa Kejadian Terperinci">Garis Masa Kejadian Terperinci</option>
-          <option value="Analisis Profil Subjek/Entiti">Analisis Profil Subjek/Entiti</option>
-          <option value="Draf Artikel Ilmiah">Draf Artikel Ilmiah</option>
-          <option value="Isi-isi Penting untuk Pembentangan">Isi-isi Penting untuk Pembentangan</option>
-          <option value="Lain-lain (Tulis Sendiri)">Lain-lain (Tulis Sendiri)</option>
-        </select>
-        <input type="text" id="customFormatOutput" class="custom-input" placeholder="Tulis format output anda..." style="display: none;">
-      </div>
-    </div>
-
-    <div class="section">
-      <h2>Subjek/Entiti Penyelidikan</h2>
-      <div id="subjects"></div>
-      <button class="button button-primary" onclick="addSubject()">Tambah Subjek</button>
-    </div>
-
-    <div class="section">
-      <h2>Butiran Penting atau Arahan Khusus</h2>
-      <div id="details"></div>
-      <button class="button button-primary" onclick="addDetail()">Tambah Butiran Penting</button>
-    </div>
-
-    <div class="section">
-      <button class="button button-primary" onclick="generatePrompt()">Jana Prompt</button>
-      <button class="button button-primary" onclick="copyPrompt()">Salin Prompt</button>
-    </div>
-
-    <div id="message" class="message" style="display: none;"></div>
-    <div id="generatedPrompt" class="generated-prompt" style="display: none;"></div>
+  <div class="section">
+    <label for="researchTitle">Tajuk Penyelidikan</label>
+    <input type="text" id="researchTitle" placeholder="Sila tulis tajuk anda">
   </div>
 
+  <div class="section">
+    <h2>Pilihan Prompt</h2>
+    <label for="researchType">Jenis Penyelidikan</label>
+    <select id="researchType">
+      <option value="">Pilih...</option>
+      <option value="Kuantitatif">Kuantitatif</option>
+      <option value="Kualitatif">Kualitatif</option>
+      <option value="Kaedah Campuran">Kaedah Campuran</option>
+    </select>
+
+    <label for="researchPurpose">Tujuan Utama Penyelidikan</label>
+    <select id="researchPurpose">
+      <option value="">Pilih...</option>
+      <option value="Mengembangkan Ilmu dan Kefahaman Secara Holistik">Mengembangkan Ilmu dan Kefahaman Secara Holistik</option>
+      <option value="Memperjelas Kefahaman dan Menangkis Salah Faham">Memperjelas Kefahaman dan Menangkis Salah Faham</option>
+      <option value="Memartabatkan Pendidikan Islam dan Kurikulum Bersepadu">Memartabatkan Pendidikan Islam dan Kurikulum Bersepadu</option>
+      <option value="Penyelidikan Latar Belakang Sistematik">Penyelidikan Latar Belakang Sistematik</option>
+      <option value="Kajian Kes Akademik">Kajian Kes Akademik</option>
+      <option value="Pembangunan Sosioekonomi">Pembangunan Sosioekonomi</option>
+      <option value="Lain-lain">Lain-lain (Tulis Sendiri)</option>
+    </select>
+    <input type="text" id="researchPurposeOther" style="display: none;" placeholder="Tulis tujuan lain">
+
+    <label for="infoType">Jenis Maklumat yang Dicari</label>
+    <select id="infoType">
+      <option value="">Pilih...</option>
+      <option value="Maklumat Teoretikal dan Konseptual (Konsep & Prinsip)">Maklumat Teoretikal dan Konseptual (Konsep & Prinsip)</option>
+      <option value="Maklumat Empirikal / Lapangan (Data Dunia Sebenar)">Maklumat Empirikal / Lapangan (Data Dunia Sebenar)</option>
+      <option value="Maklumat Dokumentasi dan Polisi">Maklumat Dokumentasi dan Polisi</option>
+      <option value="Maklumat Statistik dan Demografi">Maklumat Statistik dan Demografi</option>
+      <option value="Maklumat Manuskrip dan Warisan Ilmu Islam">Maklumat Manuskrip dan Warisan Ilmu Islam</option>
+      <option value="Maklumat Interdisiplin dan Kontemporari">Maklumat Interdisiplin dan Kontemporari</option>
+      <option value="Maklumat Pemikiran dan Isu">Maklumat Pemikiran dan Isu</option>
+      <option value="Lain-lain">Lain-lain (Tulis Sendiri)</option>
+    </select>
+    <input type="text" id="infoTypeOther" style="display: none;" placeholder="Tulis jenis maklumat lain">
+
+    <label for="infoSource">Sumber Maklumat Utama</label>
+    <select id="infoSource">
+      <option value="">Pilih...</option>
+      <option value="Sumber Wahyu dan Tradisi Islam">Sumber Wahyu dan Tradisi Islam</option>
+      <option value="Sumber Ilmiah Akademik">Sumber Ilmiah Akademik</option>
+      <option value="Sumber Rasmi dan Dokumen Kerajaan">Sumber Rasmi dan Dokumen Kerajaan</option>
+      <option value="Sumber Data Lapangan dan Empirikal">Sumber Data Lapangan dan Empirikal</option>
+      <option value="Sumber Manuskrip dan Warisan Tempatan">Sumber Manuskrip dan Warisan Tempatan</option>
+      <option value="Sumber Digital dan Multimedia">Sumber Digital dan Multimedia</option>
+      <option value="Sumber Terbuka (OSINT)">Sumber Terbuka (OSINT)</option>
+      <option value="Lain-lain">Lain-lain (Tulis Sendiri)</option>
+    </select>
+    <input type="text" id="infoSourceOther" style="display: none;" placeholder="Tulis sumber lain">
+
+    <label for="writingStyle">Gaya Bahasa dan Nada Penulisan</label>
+    <select id="writingStyle">
+      <option value="">Pilih...</option>
+      <option value="Formal dan Objektif">Formal dan Objektif</option>
+      <option value="Bahasa Berstruktur">Bahasa Berstruktur</option>
+      <option value="Analitikal dan Kritis">Analitikal dan Kritis</option>
+      <option value="Naratif dan Deskriptif">Naratif dan Deskriptif</option>
+      <option value="Persuasif (untuk laporan)">Persuasif (untuk laporan)</option>
+      <option value="Lain-lain">Lain-lain (Tulis Sendiri)</option>
+    </select>
+    <input type="text" id="writingStyleOther" style="display: none;" placeholder="Tulis gaya lain">
+
+    <label for="analysisStructure">Struktur Analisis</label>
+    <select id="analysisStructure">
+      <option value="">Pilih...</option>
+      <option value="Soalan 5W+1H (Siapa, Apa, Bila, Di Mana, Mengapa, Bagaimana)">Soalan 5W+1H (Siapa, Apa, Bila, Di Mana, Mengapa, Bagaimana)</option>
+      <option value="Analisis Kronologi Kejadian">Analisis Kronologi Kejadian</option>
+      <option value="Penegasan Tujuan dan Soalan Kajian">Penegasan Tujuan dan Soalan Kajian</option>
+      <option value="Pengenalpastian Tema atau Kategori Analisis">Pengenalpastian Tema atau Kategori Analisis</option>
+      <option value="Analisis dan Interpretasi">Analisis dan Interpretasi</option>
+      <option value="Pembinaan dan Pengujian Hipotesis">Pembinaan dan Pengujian Hipotesis</option>
+      <option value="Pengecaman Kejanggalan dan Ketidakselarasan">Pengecaman Kejanggalan dan Ketidakselarasan</option>
+      <option value="Lain-lain">Lain-lain (Tulis Sendiri)</option>
+    </select>
+    <input type="text" id="analysisStructureOther" style="display: none;" placeholder="Tulis struktur lain">
+
+    <label for="outputFormat">Format Output yang Dikehendaki</label>
+    <select id="outputFormat">
+      <option value="">Pilih...</option>
+      <option value="Ringkasan Laporan Penyelidikan">Ringkasan Laporan Penyelidikan</option>
+      <option value="Senarai Soalan untuk Temu Bual">Senarai Soalan untuk Temu Bual</option>
+      <option value="Garis Masa Kejadian Terperinci">Garis Masa Kejadian Terperinci</option>
+      <option value="Analisis Profil Subjek/Entiti">Analisis Profil Subjek/Entiti</option>
+      <option value="Draf Artikel Ilmiah">Draf Artikel Ilmiah</option>
+      <option value="Isi-isi Penting untuk Pembentangan">Isi-isi Penting untuk Pembentangan</option>
+      <option value="Lain-lain">Lain-lain (Tulis Sendiri)</option>
+    </select>
+    <input type="text" id="outputFormatOther" style="display: none;" placeholder="Tulis format lain">
+  </div>
+
+  <div class="section">
+    <h2>Subjek/Entiti Penyelidikan</h2>
+    <textarea id="researchSubject" placeholder="Tambah Subjek"></textarea>
+  </div>
+
+  <div class="section">
+    <h2>Butiran Penting atau Arahan Khusus</h2>
+    <textarea id="specialInstructions" placeholder="Tambah Butiran Penting"></textarea>
+  </div>
+
+  <div class="section">
+    <button onclick="generatePrompt()">Jana Prompt</button>
+    <button onclick="copyPrompt()">Salin Prompt</button>
+  </div>
+
+  <div id="generatedPrompt"></div>
+
   <script>
-    // State management
-    let state = {
-      jenisPenyelidikan: '',
-      tujuanUtamaPenyelidikan: '',
-      customTujuanUtamaPenyelidikan: '',
-      jenisMaklumat: '',
-      customJenisMaklumat: '',
-      sumberMaklumat: '',
-      customSumberMaklumat: '',
-      gayaBahasaNadaPenulisan: '',
-      customgayaBahasaNadaPenulisan: '',
-      strukturAnalisis: '',
-      customstrukturAnalisis: '',
-      formatOutput: '',
-      customFormatOutput: '',
-      subjekPenyelidikan: [],
-      butiranPenting: []
-    };
-
-    // Generate unique ID
-    function generateUniqueId() {
-      return `id-${Math.random().toString(36).substr(2, 9)}`;
-    }
-
-    // Toggle custom input visibility
-    function toggleCustomInput(selectId, inputId) {
+    // Show/hide "Lain-lain" input fields based on selection
+    function toggleOtherInput(selectId, inputId) {
       const select = document.getElementById(selectId);
       const input = document.getElementById(inputId);
-      input.style.display = select.value === 'Lain-lain (Tulis Sendiri)' ? 'block' : 'none';
-    }
-
-    // Initialize event listeners for dropdowns
-    ['tujuanUtamaPenyelidikan', 'jenisMaklumat', 'sumberMaklumat', 'gayaBahasaNadaPenulisan', 'strukturAnalisis', 'formatOutput'].forEach(field => {
-      const select = document.getElementById(field);
-      select.addEventListener('change', (e) => {
-        state[field] = e.target.value;
-        toggleCustomInput(field, `custom${field.charAt(0).toUpperCase() + field.slice(1)}`);
-        if (e.target.value !== 'Lain-lain (Tulis Sendiri)') {
-          state[`custom${field.charAt(0).toUpperCase() + field.slice(1)}`] = '';
-        }
-      });
-      document.getElementById(`custom${field.charAt(0).toUpperCase() + field.slice(1)}`).addEventListener('input', (e) => {
-        state[`custom${field.charAt(0).toUpperCase() + field.slice(1)}`] = e.target.value;
-      });
-    });
-
-    document.getElementById('jenisPenyelidikan').addEventListener('change', (e) => {
-      state.jenisPenyelidikan = e.target.value;
-    });
-
-    // Add subject
-    function addSubject() {
-      const id = generateUniqueId();
-      state.subjekPenyelidikan.push({ id, nama: '', peranan: '', customPeranan: '', latarBelakang: '' });
-      renderSubjects();
-    }
-
-    // Remove subject
-    function removeSubject(id) {
-      state.subjekPenyelidikan = state.subjekPenyelidikan.filter(subject => subject.id !== id);
-      renderSubjects();
-    }
-
-    // Render subjects
-    function renderSubjects() {
-      const subjectsContainer = document.getElementById('subjects');
-      subjectsContainer.innerHTML = '';
-      state.subjekPenyelidikan.forEach((subject, index) => {
-        const subjectDiv = document.createElement('div');
-        subjectDiv.className = 'subject';
-        subjectDiv.innerHTML = `
-          <h3>Subjek ${index + 1}</h3>
-          <div class="form-group">
-            <label for="nama-${subject.id}">Nama</label>
-            <input type="text" id="nama-${subject.id}" value="${subject.nama}" placeholder="Nama subjek...">
-          </div>
-          <div class="form-group">
-            <label for="peranan-${subject.id}">Peranan</label>
-            <select id="peranan-${subject.id}">
-              <option value="">Pilih...</option>
-              <option value="Suspek">Suspek</option>
-              <option value="Saksi">Saksi</option>
-              <option value="Mangsa">Mangsa</option>
-              <option value="Orang yang Disiasat">Orang yang Disiasat</option>
-              <option value="Sumber Maklumat">Sumber Maklumat</option>
-              <option value="Lain-lain (Tulis Sendiri)">Lain-lain (Tulis Sendiri)</option>
-            </select>
-            <input type="text" id="customPeranan-${subject.id}" class="custom-input" placeholder="Tulis peranan anda..." style="display: none;">
-          </div>
-          <div class="form-group">
-            <label for="latarBelakang-${subject.id}">Latar Belakang</label>
-            <input type="text" id="latarBelakang-${subject.id}" value="${subject.latarBelakang}" placeholder="Latar belakang subjek...">
-          </div>
-          <button class="button button-danger" onclick="removeSubject('${subject.id}')">Padam</button>
-        `;
-        subjectsContainer.appendChild(subjectDiv);
-
-        // Event listeners for subject inputs
-        document.getElementById(`nama-${subject.id}`).addEventListener('input', (e) => {
-          subject.nama = e.target.value;
-        });
-        document.getElementById(`peranan-${subject.id}`).addEventListener('change', (e) => {
-          subject.peranan = e.target.value;
-          toggleCustomInput(`peranan-${subject.id}`, `customPeranan-${subject.id}`);
-          if (e.target.value !== 'Lain-lain (Tulis Sendiri)') {
-            subject.customPeranan = '';
-          }
-        });
-        document.getElementById(`customPeranan-${subject.id}`).addEventListener('input', (e) => {
-          subject.customPeranan = e.target.value;
-        });
-        document.getElementById(`latarBelakang-${subject.id}`).addEventListener('input', (e) => {
-          subject.latarBelakang = e.target.value;
-        });
+      select.addEventListener('change', () => {
+        input.style.display = select.value === 'Lain-lain' ? 'block' : 'none';
       });
     }
 
-    // Add detail
-    function addDetail() {
-      const id = generateUniqueId();
-      state.butiranPenting.push({ id, value: '', custom: '' });
-      renderDetails();
-    }
+    toggleOtherInput('researchPurpose', 'researchPurposeOther');
+    toggleOtherInput('infoType', 'infoTypeOther');
+    toggleOtherInput('infoSource', 'infoSourceOther');
+    toggleOtherInput('writingStyle', 'writingStyleOther');
+    toggleOtherInput('analysisStructure', 'analysisStructureOther');
+    toggleOtherInput('outputFormat', 'outputFormatOther');
 
-    // Remove detail
-    function removeDetail(id) {
-      state.butiranPenting = state.butiranPenting.filter(detail => detail.id !== id);
-      renderDetails();
-    }
-
-    // Render details
-    function renderDetails() {
-      const detailsContainer = document.getElementById('details');
-      detailsContainer.innerHTML = '';
-      state.butiranPenting.forEach((detail, index) => {
-        const detailDiv = document.createElement('div');
-        detailDiv.className = 'detail';
-        detailDiv.innerHTML = `
-          <div class="form-group">
-            <label for="butiranPenting-${detail.id}">Butiran Penting ${index + 1}</label>
-            <select id="butiranPenting-${detail.id}">
-              <option value="">Pilih...</option>
-              <option value="Fokus pada hubungan kewangan antara subjek A dan B">Fokus pada hubungan kewangan antara subjek A dan B</option>
-              <option value="Cari kemungkinan alibi palsu">Cari kemungkinan alibi palsu</option>
-              <option value="Analisis siaran media sosial dalam 3 bulan terakhir">Analisis siaran media sosial dalam 3 bulan terakhir</option>
-              <option value="Kecam kemungkinan motif balas dendam">Kecam kemungkinan motif balas dendam</option>
-              <option value="Bandingkan keterangan saksi A dan saksi B">Bandingkan keterangan saksi A dan saksi B</option>
-              <option value="Lain-lain (Tulis Sendiri)">Lain-lain (Tulis Sendiri)</option>
-            </select>
-            <input type="text" id="customButiranPenting-${detail.id}" class="custom-input" placeholder="Tulis butiran penting anda..." style="display: none;">
-          </div>
-          ${state.butiranPenting.length > 1 ? `<button class="button button-danger" onclick="removeDetail('${detail.id}')">Padam</button>` : ''}
-        `;
-        detailsContainer.appendChild(detailDiv);
-
-        // Event listeners for detail inputs
-        document.getElementById(`butiranPenting-${detail.id}`).addEventListener('change', (e) => {
-          detail.value = e.target.value;
-          toggleCustomInput(`butiranPenting-${detail.id}`, `customButiranPenting-${detail.id}`);
-          if (e.target.value !== 'Lain-lain (Tulis Sendiri)') {
-            detail.custom = '';
-          }
-        });
-        document.getElementById(`customButiranPenting-${detail.id}`).addEventListener('input', (e) => {
-          detail.custom = e.target.value;
-        });
-      });
-    }
-
-    // Generate prompt
     function generatePrompt() {
-      const parts = [];
+      const researchTitle = document.getElementById('researchTitle').value || 'Tiada tajuk ditentukan';
+      const researchType = document.getElementById('researchType').value || 'Tiada jenis penyelidikan dipilih';
+      const researchPurpose = document.getElementById('researchPurpose').value === 'Lain-lain' ?
+        document.getElementById('researchPurposeOther').value || 'Tiada tujuan lain ditentukan' :
+        document.getElementById('researchPurpose').value || 'Tiada tujuan penyelidikan dipilih';
+      const infoType = document.getElementById('infoType').value === 'Lain-lain' ?
+        document.getElementById('infoTypeOther').value || 'Tiada jenis maklumat lain ditentukan' :
+        document.getElementById('infoType').value || 'Tiada jenis maklumat dipilih';
+      const infoSource = document.getElementById('infoSource').value === 'Lain-lain' ?
+        document.getElementById('infoSourceOther').value || 'Tiada sumber lain ditentukan' :
+        document.getElementById('infoSource').value || 'Tiada sumber maklumat dipilih';
+      const writingStyle = document.getElementById('writingStyle').value === 'Lain-lain' ?
+        document.getElementById('writingStyleOther').value || 'Tiada gaya lain ditentukan' :
+        document.getElementById('writingStyle').value || 'Tiada gaya penulisan dipilih';
+      const analysisStructure = document.getElementById('analysisStructure').value === 'Lain-lain' ?
+        document.getElementById('analysisStructureOther').value || 'Tiada struktur lain ditentukan' :
+        document.getElementById('analysisStructure').value || 'Tiada struktur analisis dipilih';
+      const outputFormat = document.getElementById('outputFormat').value === 'Lain-lain' ?
+        document.getElementById('outputFormatOther').value || 'Tiada format lain ditentukan' :
+        document.getElementById('outputFormat').value || 'Tiada format output dipilih';
+      const researchSubject = document.getElementById('researchSubject').value || 'Tiada subjek ditentukan';
+      const specialInstructions = document.getElementById('specialInstructions').value || 'Tiada arahan khusus ditentukan';
 
-      const getValue = (field) => {
-        const selectedValue = state[field];
-        if (field === 'jenisPenyelidikan') {
-          return selectedValue;
-        }
-        const customValue = state[`custom${field.charAt(0).toUpperCase() + field.slice(1)}`];
-        return selectedValue === 'Lain-lain (Tulis Sendiri)' ? customValue : selectedValue;
-      };
+      const prompt = `
+Sila hasilkan satu prompt penyelidikan berdasarkan butiran berikut:
 
-      const getSubjekDetails = (subjek) => {
-        const details = [];
-        if (subjek.nama) details.push(`Nama: ${subjek.nama}`);
-        if (subjek.peranan) details.push(`Peranan: ${subjek.peranan === 'Lain-lain (Tulis Sendiri)' ? subjek.customPeranan : subjek.peranan}`);
-        if (subjek.latarBelakang) details.push(`Latar Belakang: ${subjek.latarBelakang}`);
-        return details.join(', ');
-      };
+**Tajuk Penyelidikan**: ${researchTitle}
+**Jenis Penyelidikan**: ${researchType}
+**Tujuan Utama Penyelidikan**: ${researchPurpose}
+**Jenis Maklumat yang Dicari**: ${infoType}
+**Sumber Maklumat Utama**: ${infoSource}
+**Gaya Bahasa dan Nada Penulisan**: ${writingStyle}
+**Struktur Analisis**: ${analysisStructure}
+**Format Output yang Dikehendaki**: ${outputFormat}
+**Subjek/Entiti Penyelidikan**: ${researchSubject}
+**Butiran Penting atau Arahan Khusus**: ${specialInstructions}
 
-      parts.push("Anda ialah seorang pembantu penyelidikan AI yang pakar. Berdasarkan maklumat berikut, jana output yang diminta.");
-      parts.push("---");
+Sila pastikan prompt yang dihasilkan adalah jelas, terperinci, dan selari dengan pilihan di atas.
+      `;
 
-      const appendIfPresent = (label, value) => {
-        if (value) parts.push(`**${label}:** ${value}`);
-      };
-
-      appendIfPresent('Jenis Penyelidikan', getValue('jenisPenyelidikan'));
-      appendIfPresent('Tujuan Utama Penyelidikan', getValue('tujuanUtamaPenyelidikan'));
-      appendIfPresent('Jenis Maklumat yang Dicari', getValue('jenisMaklumat'));
-      appendIfPresent('Sumber Maklumat Utama', getValue('sumberMaklumat'));
-      appendIfPresent('Gaya Bahasa dan Nada Penulisan', getValue('gayaBahasaNadaPenulisan'));
-      appendIfPresent('Struktur Analisis/Gesa', getValue('strukturAnalisis'));
-      appendIfPresent('Format Output yang Dikehendaki', getValue('formatOutput'));
-
-      if (state.subjekPenyelidikan.length > 0) {
-        parts.push("\n**Subjek/Entiti Utama:**");
-        state.subjekPenyelidikan.forEach((subjek, index) => {
-          const details = getSubjekDetails(subjek);
-          if (details) parts.push(`- Subjek ${index + 1}: ${details}`);
-        });
-      }
-
-      const butiranPentingValues = state.butiranPenting
-        .map(item => (item.value === 'Lain-lain (Tulis Sendiri)' ? item.custom : item.value))
-        .filter(Boolean);
-      if (butiranPentingValues.length > 0) {
-        parts.push("\n**Butiran Penting atau Arahan Khusus:**");
-        butiranPentingValues.forEach(detail => parts.push(`- ${detail}`));
-      }
-
-      parts.push("\n---");
-      parts.push("Sila proses permintaan ini secara komprehensif dan terperinci.");
-
-      const promptText = parts.filter(Boolean).join('\n');
-      const generatedPrompt = document.getElementById('generatedPrompt');
-      generatedPrompt.style.display = 'block';
-      generatedPrompt.textContent = promptText;
-
-      const message = document.getElementById('message');
-      message.className = 'message success';
-      message.style.display = 'block';
-      message.textContent = 'Prompt berjaya dijana!';
+      document.getElementById('generatedPrompt').innerText = prompt;
     }
 
-    // Copy prompt to clipboard
     function copyPrompt() {
-      const generatedPrompt = document.getElementById('generatedPrompt');
-      if (!generatedPrompt.textContent) {
-        const message = document.getElementById('message');
-        message.className = 'message error';
-        message.style.display = 'block';
-        message.textContent = 'Tiada prompt untuk disalin. Sila jana prompt terlebih dahulu.';
-        return;
-      }
-
-      const textarea = document.createElement('textarea');
-      textarea.value = generatedPrompt.textContent;
-      document.body.appendChild(textarea);
-      textarea.select();
-      try {
-        document.execCommand('copy');
-        const message = document.getElementById('message');
-        message.className = 'message success';
-        message.style.display = 'block';
-        message.textContent = 'Prompt berjaya disalin ke papan keratan!';
-      } catch (err) {
-        const message = document.getElementById('message');
-        message.className = 'message error';
-        message.style.display = 'block';
-        message.textContent = 'Gagal menyalin prompt.';
-      }
-      document.body.removeChild(textarea);
+      const promptText = document.getElementById('generatedPrompt').innerText;
+      navigator.clipboard.writeText(promptText).then(() => {
+        alert('Prompt telah disalin ke papan klip!');
+      });
     }
-
-    // Initialize with one detail
-    addDetail();
   </script>
 </body>
 </html>
