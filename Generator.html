@@ -1,3 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Penjana Prompt Penyelidikan</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f3f4f6;
+      color: #1f2937;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      padding: 40px 0;
+      background-color: #1e40af;
+      color: white;
+      border-radius: 8px;
+      margin-bottom: 40px;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    header p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .feature-card {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .feature-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      color: #1e40af;
+    }
+
+    .feature-card p {
+      color: #4b5563;
+    }
+
+    .cta {
+      text-align: center;
+      margin: 40px 0;
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 12px 24px;
+      background-color: #1e40af;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 1.1rem;
+      transition: background-color 0.2s;
+    }
+
+    .cta-button:hover {
+      background-color: #1e3a8a;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px 0;
+      background-color: #1f2937;
+      color: white;
+      margin-top: 40px;
+    }
+
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2rem;
+      }
+
+      .container {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Penjana Prompt Penyelidikan</h1>
+      <p>Alat berkuasa untuk menghasilkan gesa siasatan yang terperinci dan tersusun</p>
+    </div>
+  </header>
+
+  <div class="container">
+    <section class="features">
+      <div class="feature-card">
+        <h3>Pilihan Fleksibel</h3>
+        <p>Pilih daripada pelbagai jenis siasatan, sumber maklumat, dan format output untuk disesuaikan dengan keperluan anda.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Struktur Terperinci</h3>
+        <p>Menghasilkan gesa dengan struktur analisis seperti 5W+1H, kronologi kejadian, dan banyak lagi.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Mudah Digunakan</h3>
+        <p>Antara muka yang mesra pengguna untuk menghasilkan dan menyalin gesa siasatan dengan cepat.</p>
+      </div>
+    </section>
+
+    <div class="cta">
+      <a href="#" class="cta-button" onclick="alert('Fungsi penjana akan tersedia tidak lama lagi!')">Cuba Sekarang</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2025 Penjana Prompt Penyelidikan. Hak cipta terpelihara.</p>
+  </footer>
+
+  <script>
+    // Basic interactivity for the CTA button
+    document.querySelector('.cta-button').addEventListener('click', (e) => {
+      e.preventDefault();
+      alert('Fungsi penjana akan tersedia tidak lama lagi!');
+    });
+ 
 import React, { useState, useCallback } from 'react';
 
 // Fungsi bantuan untuk menjana ID unik
@@ -447,3 +596,6 @@ function App() {
 }
 
 export default App;
+     </script>
+</body>
+</html>
